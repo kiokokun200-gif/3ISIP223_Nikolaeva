@@ -212,7 +212,7 @@ void SearchByCategory()
     }
     ShowProducts(result);
 }
-
+     
 void ShowAllProducts()
 {
     ShowProducts(products);
