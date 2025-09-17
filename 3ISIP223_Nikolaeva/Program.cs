@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp2
+namespace 3ISIP223_Nikolaeva
 {  
     public enum ProductCategory
     {
