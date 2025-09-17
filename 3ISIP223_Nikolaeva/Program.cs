@@ -78,7 +78,7 @@ void AddProduct()
     products.Add(new Product(name, price, quantity, category));
     Console.WriteLine("Товар добавлен");
 }
-
+ 
 void RemoveProduct()
 {
     Console.Write("ID товара: ");
