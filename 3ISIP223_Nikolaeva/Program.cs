@@ -104,7 +104,7 @@ void RemoveProduct()
         Console.WriteLine("Не найден");
     }
 }
-
+ 
 void OrderSupply()
 {
     Console.Write("ID товара: ");
