@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleApp2
-{
-    // Enum должен быть публичным и вне класса Product
+{  
     public enum ProductCategory
     {
         Electronics,
