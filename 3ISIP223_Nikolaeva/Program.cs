@@ -154,7 +154,7 @@ namespace _ISIP223_Nikolaeva
                     }
                 }
             }
-        }
+        } 
 
         // Поиск самого длинного слова
         static string FindLongestWord(string text)
