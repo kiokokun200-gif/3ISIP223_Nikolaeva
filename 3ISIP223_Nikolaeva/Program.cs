@@ -192,7 +192,7 @@ namespace _ISIP223_Nikolaeva
                     {
                         frequency[lowerC] = 1;
                     }
-                }
+                } 
             }
 
             return frequency;
