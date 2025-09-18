@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace dfg
+namespace _ISIP223_Nikolaeva
 {
     internal class Program
     {
         // Структура для хранения статистики по тексту
         struct TextStatistics
         {
-            public string Text;
             public int WordCount;
             public string ShortestWord;
             public int SentenceCount;
@@ -17,15 +15,9 @@ namespace dfg
             public int ConsonantCount;
             public string LongestWord;
             public Dictionary<char, int> LetterFrequency;
-            public DateTime AnalysisTime;
         }
 
-        // Список для хранения статистики по всем текстам
         private static List<TextStatistics> allStatistics = new List<TextStatistics>();
-
-        // Наборы гласных букв (русский и английский алфавиты)
-        private static readonly HashSet<char> vowels = new HashSet<char>("аеёиоуыэюяaeiou");
-        private static readonly HashSet<char> consonants = new HashSet<char>("бвгджзйклмнпрстфхцчшщbcdfghjklmnpqrstvwxyz");
 
         static void Main(string[] args)
         {
@@ -59,30 +51,20 @@ namespace dfg
                 }
             }
 
-            Console.WriteLine("Программа завершена. До свидания!");
-            Console.ReadKey();
+        
         }
 
         // Метод для анализа нового текста
         static void AnalyzeNewText()
         {
-            Console.WriteLine("\nВведите текст (минимум 100 символов):");
+            Console.WriteLine("\nВведите текст:");
             string text = Console.ReadLine();
 
-            // Проверка минимальной длины текста
-            while (text != null && text.Length < 100)
-            {
-                Console.WriteLine($"Текст слишком короткий! Введено {text.Length} символов. Нужно минимум 100.");
-                Console.WriteLine("Пожалуйста, введите текст еще раз:");
-                text = Console.ReadLine();
-            }
-
+        
             if (text == null) return;
 
             // Создание структуры для хранения статистики
             TextStatistics stats = new TextStatistics();
-            stats.Text = text;
-            stats.AnalysisTime = DateTime.Now;
 
             // Выполнение всех анализов
             stats.WordCount = CountWords(text);
@@ -101,27 +83,14 @@ namespace dfg
             DisplayCurrentStatistics(stats);
         }
 
-        // Подсчет количества слов в тексте
+        // Подсчет количества слов в тексте (простая версия)
         static int CountWords(string text)
         {
-            int wordCount = 0;
-            bool inWord = false;
+            int wordCount = 1;
 
             foreach (char c in text)
             {
-                // Проверяем, является ли символ частью слова (буква или апостроф)
-                if (char.IsLetter(c) || c == '\'')
-                {
-                    if (!inWord)
-                    {
-                        wordCount++;
-                        inWord = true;
-                    }
-                }
-                else
-                {
-                    inWord = false;
-                }
+                if (c == ' ') wordCount++;
             }
 
             return wordCount;
@@ -130,34 +99,15 @@ namespace dfg
         // Поиск самого короткого слова
         static string FindShortestWord(string text)
         {
-            string shortestWord = "";
-            int shortestLength = int.MaxValue;
-            StringBuilder currentWord = new StringBuilder();
+            string[] words = text.Split(' ');
+            string shortestWord = words[0];
 
-            foreach (char c in text)
+            foreach (string word in words)
             {
-                if (char.IsLetter(c) || c == '\'')
+                if (word.Length < shortestWord.Length && word.Length > 0)
                 {
-                    currentWord.Append(c);
+                    shortestWord = word;
                 }
-                else
-                {
-                    if (currentWord.Length > 0)
-                    {
-                        if (currentWord.Length < shortestLength)
-                        {
-                            shortestLength = currentWord.Length;
-                            shortestWord = currentWord.ToString();
-                        }
-                        currentWord.Clear();
-                    }
-                }
-            }
-
-            // Проверяем последнее слово
-            if (currentWord.Length > 0 && currentWord.Length < shortestLength)
-            {
-                shortestWord = currentWord.ToString();
             }
 
             return shortestWord;
@@ -167,31 +117,13 @@ namespace dfg
         static int CountSentences(string text)
         {
             int sentenceCount = 0;
-            bool inSentence = false;
 
             foreach (char c in text)
             {
-                if (char.IsLetter(c) || char.IsDigit(c))
+                if (c == '.' || c == '!' || c == '?')
                 {
-                    if (!inSentence)
-                    {
-                        inSentence = true;
-                    }
+                    sentenceCount++;
                 }
-                else if (c == '.' || c == '!' || c == '?' || c == ';')
-                {
-                    if (inSentence)
-                    {
-                        sentenceCount++;
-                        inSentence = false;
-                    }
-                }
-            }
-
-            // Если текст заканчивается без знака препинания
-            if (inSentence)
-            {
-                sentenceCount++;
             }
 
             return sentenceCount;
@@ -205,15 +137,21 @@ namespace dfg
 
             foreach (char c in text)
             {
-                char lowerC = char.ToLower(c);
+                if (char.IsLetter(c))
+                {
+                    char lowerC = char.ToLower(c);
 
-                if (vowels.Contains(lowerC))
-                {
-                    vowelCount++;
-                }
-                else if (consonants.Contains(lowerC))
-                {
-                    consonantCount++;
+                    // Простая проверка на гласные
+                    if (lowerC == 'а' || lowerC == 'е' || lowerC == 'ё' || lowerC == 'и' || lowerC == 'о' ||
+                        lowerC == 'у' || lowerC == 'ы' || lowerC == 'э' || lowerC == 'ю' || lowerC == 'я' ||
+                        lowerC == 'a' || lowerC == 'e' || lowerC == 'i' || lowerC == 'o' || lowerC == 'u')
+                    {
+                        vowelCount++;
+                    }
+                    else
+                    {
+                        consonantCount++;
+                    }
                 }
             }
         }
@@ -221,31 +159,15 @@ namespace dfg
         // Поиск самого длинного слова
         static string FindLongestWord(string text)
         {
+            string[] words = text.Split(' ');
             string longestWord = "";
-            int longestLength = 0;
-            StringBuilder currentWord = new StringBuilder();
 
-            foreach (char c in text)
+            foreach (string word in words)
             {
-                if (char.IsLetter(c) || c == '\'')
+                if (word.Length > longestWord.Length)
                 {
-                    currentWord.Append(c);
+                    longestWord = word;
                 }
-                else
-                {
-                    if (currentWord.Length > longestLength)
-                    {
-                        longestLength = currentWord.Length;
-                        longestWord = currentWord.ToString();
-                    }
-                    currentWord.Clear();
-                }
-            }
-
-            // Проверяем последнее слово
-            if (currentWord.Length > longestLength)
-            {
-                longestWord = currentWord.ToString();
             }
 
             return longestWord;
@@ -292,8 +214,6 @@ namespace dfg
             {
                 Console.WriteLine($"{pair.Key}: {pair.Value}");
             }
-
-            Console.WriteLine($"\nВремя анализа: {stats.AnalysisTime}");
         }
 
         // Вывод статистики по прошлым текстам
@@ -310,16 +230,13 @@ namespace dfg
             for (int i = 0; i < allStatistics.Count; i++)
             {
                 Console.WriteLine($"\n--- Текст #{i + 1} ---");
-                Console.WriteLine($"Время анализа: {allStatistics[i].AnalysisTime}");
                 Console.WriteLine($"Количество слов: {allStatistics[i].WordCount}");
                 Console.WriteLine($"Количество предложений: {allStatistics[i].SentenceCount}");
                 Console.WriteLine($"Гласные/Согласные: {allStatistics[i].VowelCount}/{allStatistics[i].ConsonantCount}");
                 Console.WriteLine($"Самое короткое слово: \"{allStatistics[i].ShortestWord}\"");
                 Console.WriteLine($"Самое длинное слово: \"{allStatistics[i].LongestWord}\"");
-
-                // Для экономии места не выводим полную статистику по буквам для всех текстов
-                Console.WriteLine($"Уникальных букв: {allStatistics[i].LetterFrequency.Count}");
+               
             }
         }
-    } 
+    }
 }
