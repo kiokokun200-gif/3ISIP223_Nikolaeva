@@ -197,7 +197,7 @@ namespace _ISIP223_Nikolaeva
 
             return frequency;
         }
-
+         
         // Вывод статистики по текущему тексту
         static void DisplayCurrentStatistics(TextStatistics stats)
         {
