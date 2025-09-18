@@ -321,5 +321,5 @@ namespace dfg
                 Console.WriteLine($"Уникальных букв: {allStatistics[i].LetterFrequency.Count}");
             }
         }
-    }
+    } 
 }
