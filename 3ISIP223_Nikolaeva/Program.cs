@@ -115,7 +115,7 @@ namespace _3ISIP223_Nikolaeva
             Books.Add(new Book(name, author, yearPublication, genre, price));
             Console.WriteLine("Книга добавлена");
         }
-
+         
         static void RemoveBook()
         {
             Console.Write("ID книги: ");
