@@ -41,7 +41,8 @@ namespace _3ISIP223_Nikolaeva
             new Book("1984", "Джордж Оруэлл", 1949, Book_genre.Nonfiction, 800),
             new Book("Гордость и предубеждение", "Джейн Остин", 1813, Book_genre.Romance, 950),
             new Book("Мастер и Маргарита", "Михаил Булгаков", 1967, Book_genre.Classic, 1200),
-            new Book("Маленькие женщины", "Луиза Мэй Олкотт", 1868, Book_genre.Romance, 700)
+            new Book("Маленькие женщины", "Луиза Мэй Олкотт", 1868, Book_genre.Romance, 700),
+            new Book("Маленькие женщиныsss", "Луиза Мэй Олкотт", 1868, Book_genre.Romance, 700)
         };
 
         static void Main(string[] args)
@@ -106,7 +107,7 @@ namespace _3ISIP223_Nikolaeva
                 return;
             }
 
-            if (yearPublication <= 0 || price < 0)
+            if (yearPublication < 0 || price < 0)
             {
                 Console.WriteLine("Ошибка: год должен быть положительным, цена не может быть отрицательной");
                 return; 
@@ -155,7 +156,7 @@ namespace _3ISIP223_Nikolaeva
             Console.Write("Автор: ");
             string author = Console.ReadLine();
 
-            var result = Books.Where(b => b.Author.ToLower().Contains(author.ToLower())).ToList();
+            var result = Books.Where(b => b.Author.Contains(author)).ToList();
             if (result.Count != 0)
             {
                 ShowBooks(result);
@@ -181,7 +182,7 @@ namespace _3ISIP223_Nikolaeva
                 Console.WriteLine("Не найдено");
             }
         }
-         
+          
         static void SortByName()
         {
             var sortedbyname = Books.OrderBy(b => b.Name).ToList();
