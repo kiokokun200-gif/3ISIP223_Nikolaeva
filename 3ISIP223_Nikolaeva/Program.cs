@@ -109,7 +109,7 @@ namespace _3ISIP223_Nikolaeva
             if (yearPublication <= 0 || price < 0)
             {
                 Console.WriteLine("Ошибка: год должен быть положительным, цена не может быть отрицательной");
-                return;
+                return; 
             }
 
             Books.Add(new Book(name, author, yearPublication, genre, price));
