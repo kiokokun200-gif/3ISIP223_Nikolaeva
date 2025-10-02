@@ -75,6 +75,14 @@ namespace _3ISIP223_Nikolaeva
     }
 
 
+    class University
+    {
+        List<Student> students = new List<Student>();
+        List<Teacher> teachers = new List<Teacher>();
+        List<Courses> courses = new List<Courses>();
+    }
+
+
         internal class Program
     {
         static void Main(string[] args)
