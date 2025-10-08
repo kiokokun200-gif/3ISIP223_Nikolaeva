@@ -27,7 +27,7 @@ namespace _3ISIP223_Nikolaeva
         }
 
     }
-
+ 
 
     class Student : Person 
     {
@@ -117,6 +117,7 @@ namespace _3ISIP223_Nikolaeva
         
 
     }
+
 
 
     class University
