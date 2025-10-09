@@ -452,6 +452,7 @@ namespace _3ISIP223_Nikolaeva
             }
         }
 
+
         static void ShowAllInfo()
         {
             Console.Clear();
