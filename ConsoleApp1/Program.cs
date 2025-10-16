@@ -10,6 +10,20 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
+            ShopZapchast shop = new ShopZapchast
+            {
+                ID_ShopZapchast = 4,
+                Name = "kldsjf",
+                Price = 12,
+                Count = 1
+            };
+
+            Core.Context.ShopZapchast.Add(shop);
+            Core.Context.SaveChanges();
+
+
+
+            
         }
     }
 }

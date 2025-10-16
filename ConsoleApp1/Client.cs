@@ -12,15 +12,18 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class Client
     {
-        public int ID_Order { get; set; }
-        public int ID_Client { get; set; }
-        public int ID_Salon { get; set; }
-        public double price { get; set; }
-        public string probliem { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Client()
+        {
+            this.Order = new HashSet<Order>();
+        }
     
-        public virtual Client Client { get; set; }
-        public virtual Salon Salon { get; set; }
+        public int ID_Client { get; set; }
+        public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Order { get; set; }
     }
 }

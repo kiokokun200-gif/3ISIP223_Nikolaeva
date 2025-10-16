@@ -4,20 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="63d4e1eef1594b6f8b3b89f0dbf8f069" Name="Diagram1">
-        <EntityTypeShape EntityType="PogModel.Order" Width="1.5" PointX="9.75" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PogModel.Salon" Width="1.5" PointX="7.5" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PogModel.Shop" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PogModel.ShopZapchast" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PogModel.Sklad" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PogModel.SkladZapch" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PogModel.Zapchast" Width="1.5" PointX="5.25" PointY="7.5" IsExpanded="true" />
-        <AssociationConnector Association="PogModel.FK_Order_Salon" ManuallyRouted="false" />
-        <AssociationConnector Association="PogModel.FK_Salon_Sklad" ManuallyRouted="false" />
-        <AssociationConnector Association="PogModel.FK_Shop_ShopZapchast" ManuallyRouted="false" />
-        <AssociationConnector Association="PogModel.FK_Sklad_Shop" ManuallyRouted="false" />
-        <AssociationConnector Association="PogModel.FK_SkladZapch_Sklad" ManuallyRouted="false" />
-        <AssociationConnector Association="PogModel.FK_SkladZapch_Zapchast" ManuallyRouted="false" />
+      <Diagram DiagramId="a5c4b439092e4fa3be4d569166c32e3c" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="nicoModel.Client" Width="1.5" PointX="7.5" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="nicoModel.Order" Width="1.5" PointX="9.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="nicoModel.Salon" Width="1.5" PointX="7.5" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="nicoModel.Shop" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="nicoModel.ShopZapchast" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="nicoModel.Sklad" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="nicoModel.SkladZapch" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="nicoModel.Zapchast" Width="1.5" PointX="5.25" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="nicoModel.FK_Order_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="nicoModel.FK_Order_Salon" ManuallyRouted="false" />
+        <AssociationConnector Association="nicoModel.FK_Salon_Sklad" ManuallyRouted="false" />
+        <AssociationConnector Association="nicoModel.FK_Shop_ShopZapchast" ManuallyRouted="false" />
+        <AssociationConnector Association="nicoModel.FK_Sklad_Shop" ManuallyRouted="false" />
+        <AssociationConnector Association="nicoModel.FK_SkladZapch_Sklad" ManuallyRouted="false" />
+        <AssociationConnector Association="nicoModel.FK_SkladZapch_Zapchast" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

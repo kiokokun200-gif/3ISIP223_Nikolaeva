@@ -13,10 +13,10 @@ namespace ConsoleApp1
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class PogEntities : DbContext
+    public partial class nicoEntities2 : DbContext
     {
-        public PogEntities()
-            : base("name=PogEntities")
+        public nicoEntities2()
+            : base("name=nicoEntities2")
         {
         }
     
@@ -25,6 +25,7 @@ namespace ConsoleApp1
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Client> Client { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<Salon> Salon { get; set; }
         public virtual DbSet<Shop> Shop { get; set; }
