@@ -272,6 +272,7 @@ namespace _3ISIP223_Nikolaeva
                 default:
                     return new BossVvg();
             }
+
         }
 
         private void Combat(Enemy enemy)
