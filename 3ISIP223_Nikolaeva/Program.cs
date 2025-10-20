@@ -172,11 +172,11 @@ namespace _3ISIP223_Nikolaeva
         // Предметы для сундуков
         private List<Item> weapons = new List<Item>
         {
-            new Item("Деревянный меч", 5, 0),
-            new Item("Железный меч", 10, 0),
-            new Item("Стальной меч", 15, 0),
-            new Item("Волшебный посох", 12, 3),
-            new Item("Легендарный клинок", 20, 5)
+            new Item("Небесная ось", 5, 0),
+            new Item("Волчья погибель", 10, 0),
+            new Item("Аква Симулякрум", 15, 0),
+            new Item("Нефритовый коршун", 12, 3),
+            new Item("Посох Хомы", 20, 5)
         };
 
         private List<Item> armors = new List<Item>
@@ -191,7 +191,7 @@ namespace _3ISIP223_Nikolaeva
         public Game()
         {
             // Начальная экипировка
-            CurrentWeapon = new Item("Кулаки", 2, 0);
+            CurrentWeapon = new Item("Дубина переговоров", 2, 0);
             CurrentArmor = new Item("Одежда", 0, 1);
         }
 
@@ -272,7 +272,6 @@ namespace _3ISIP223_Nikolaeva
                 default:
                     return new BossVvg();
             }
-
         }
 
         private void Combat(Enemy enemy)
