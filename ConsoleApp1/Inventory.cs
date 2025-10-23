@@ -12,20 +12,19 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class ShopZapchast
+    public partial class Inventory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ShopZapchast()
+        public Inventory()
         {
-            this.Shop = new HashSet<Shop>();
+            this.Part_Inventorry = new HashSet<Part_Inventorry>();
         }
     
-        public int ID_ShopZapchast { get; set; }
-        public string Name { get; set; }
-        public double Price { get; set; }
-        public int Count { get; set; }
+        public int Inventory_ID { get; set; }
+        public System.DateTime PurchaseDate { get; set; }
+        public int Cost { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Shop> Shop { get; set; }
+        public virtual ICollection<Part_Inventorry> Part_Inventorry { get; set; }
     }
 }

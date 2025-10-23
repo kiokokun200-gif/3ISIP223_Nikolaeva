@@ -12,15 +12,13 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class Purchase_Queue
     {
-        public int ID_Order { get; set; }
-        public int ID_Client { get; set; }
-        public int ID_Salon { get; set; }
-        public double price { get; set; }
-        public string probliem { get; set; }
+        public int Purchase_Queue_ID { get; set; }
+        public int Part_ID { get; set; }
+        public int Quantity { get; set; }
+        public int Days_to_arrive { get; set; }
     
-        public virtual Client Client { get; set; }
-        public virtual Salon Salon { get; set; }
+        public virtual Part Part { get; set; }
     }
 }

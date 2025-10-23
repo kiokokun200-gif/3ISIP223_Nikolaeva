@@ -12,24 +12,23 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Sklad
+    public partial class Part
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Sklad()
+        public Part()
         {
-            this.Salon = new HashSet<Salon>();
-            this.SkladZapch = new HashSet<SkladZapch>();
+            this.Part_Inventorry = new HashSet<Part_Inventorry>();
+            this.Purchase_Queue = new HashSet<Purchase_Queue>();
         }
     
-        public int ID_Sklad { get; set; }
-        public int ID_SkladZapch { get; set; }
+        public int Part_ID { get; set; }
         public string Name { get; set; }
-        public int ID_Shop { get; set; }
+        public int Puchase_price { get; set; }
+        public int Sell_price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Salon> Salon { get; set; }
-        public virtual Shop Shop { get; set; }
+        public virtual ICollection<Part_Inventorry> Part_Inventorry { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SkladZapch> SkladZapch { get; set; }
+        public virtual ICollection<Purchase_Queue> Purchase_Queue { get; set; }
     }
 }

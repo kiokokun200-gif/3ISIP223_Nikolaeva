@@ -4,406 +4,214 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище nicoModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Client">
+      <Schema Namespace="Хранилище nico_carServiceModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Inventory">
           <Key>
-            <PropertyRef Name="ID_Client" />
+            <PropertyRef Name="Inventory_ID" />
           </Key>
-          <Property Name="ID_Client" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Inventory_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseDate" Type="date" Nullable="false" />
+          <Property Name="Cost" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Order">
+        <EntityType Name="Part">
           <Key>
-            <PropertyRef Name="ID_Order" />
+            <PropertyRef Name="Part_ID" />
           </Key>
-          <Property Name="ID_Order" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ID_Client" Type="int" Nullable="false" />
-          <Property Name="ID_Salon" Type="int" Nullable="false" />
-          <Property Name="price" Type="float" Nullable="false" />
-          <Property Name="probliem" Type="nvarchar" MaxLength="100" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Salon">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ID_Sklad" Type="int" Nullable="false" />
-          <Property Name="Money" Type="float" Nullable="false" />
-          <Property Name="ID_Order" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Shop">
-          <Key>
-            <PropertyRef Name="ID_Shop" />
-          </Key>
-          <Property Name="ID_Shop" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ID_ShopZapchast" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ShopZapchast">
-          <Key>
-            <PropertyRef Name="ID_ShopZapchast" />
-          </Key>
-          <Property Name="ID_ShopZapchast" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Price" Type="float" Nullable="false" />
-          <Property Name="Count" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Sklad">
-          <Key>
-            <PropertyRef Name="ID_Sklad" />
-          </Key>
-          <Property Name="ID_Sklad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ID_SkladZapch" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ID_Shop" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SkladZapch">
-          <Key>
-            <PropertyRef Name="ID_SkladZapch" />
-          </Key>
-          <Property Name="ID_SkladZapch" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ID_Sklad" Type="int" Nullable="false" />
-          <Property Name="ID_Zapchast" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Zapchast">
-          <Key>
-            <PropertyRef Name="ID_Zapchast" />
-          </Key>
-          <Property Name="ID_Zapchast" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Part_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Count" Type="int" Nullable="false" />
-          <Property Name="Price" Type="float" Nullable="false" />
+          <Property Name="Puchase_price" Type="int" Nullable="false" />
+          <Property Name="Sell_price" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Order_Client">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
-          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+        <EntityType Name="Part_Inventorry">
+          <Key>
+            <PropertyRef Name="Part_Inventorry_ID" />
+          </Key>
+          <Property Name="Part_Inventorry_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Part_ID" Type="int" Nullable="false" />
+          <Property Name="Inventory_ID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Purchase_Queue">
+          <Key>
+            <PropertyRef Name="Purchase_Queue_ID" />
+          </Key>
+          <Property Name="Purchase_Queue_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Part_ID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Days_to_arrive" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="Service_ID" />
+          </Key>
+          <Property Name="Service_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Balance" Type="int" Nullable="false" />
+          <Property Name="Current_day" Type="int" Nullable="false" />
+          <Property Name="Count_clients" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Part_Inventorry_Inventory">
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="1" />
+          <End Role="Part_Inventorry" Type="Self.Part_Inventorry" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="ID_Client" />
+            <Principal Role="Inventory">
+              <PropertyRef Name="Inventory_ID" />
             </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="ID_Client" />
+            <Dependent Role="Part_Inventorry">
+              <PropertyRef Name="Inventory_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_Salon">
-          <End Role="Salon" Type="Self.Salon" Multiplicity="1" />
-          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+        <Association Name="FK_Part_Inventorry_Part">
+          <End Role="Part" Type="Self.Part" Multiplicity="1" />
+          <End Role="Part_Inventorry" Type="Self.Part_Inventorry" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Salon">
-              <PropertyRef Name="ID" />
+            <Principal Role="Part">
+              <PropertyRef Name="Part_ID" />
             </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="ID_Salon" />
+            <Dependent Role="Part_Inventorry">
+              <PropertyRef Name="Part_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Salon_Sklad">
-          <End Role="Sklad" Type="Self.Sklad" Multiplicity="1" />
-          <End Role="Salon" Type="Self.Salon" Multiplicity="*" />
+        <Association Name="FK_Purchase_Queue_Part">
+          <End Role="Part" Type="Self.Part" Multiplicity="1" />
+          <End Role="Purchase_Queue" Type="Self.Purchase_Queue" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Sklad">
-              <PropertyRef Name="ID_Sklad" />
+            <Principal Role="Part">
+              <PropertyRef Name="Part_ID" />
             </Principal>
-            <Dependent Role="Salon">
-              <PropertyRef Name="ID_Sklad" />
+            <Dependent Role="Purchase_Queue">
+              <PropertyRef Name="Part_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Shop_ShopZapchast">
-          <End Role="ShopZapchast" Type="Self.ShopZapchast" Multiplicity="1" />
-          <End Role="Shop" Type="Self.Shop" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ShopZapchast">
-              <PropertyRef Name="ID_ShopZapchast" />
-            </Principal>
-            <Dependent Role="Shop">
-              <PropertyRef Name="ID_ShopZapchast" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Sklad_Shop">
-          <End Role="Shop" Type="Self.Shop" Multiplicity="1" />
-          <End Role="Sklad" Type="Self.Sklad" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Shop">
-              <PropertyRef Name="ID_Shop" />
-            </Principal>
-            <Dependent Role="Sklad">
-              <PropertyRef Name="ID_Shop" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SkladZapch_Sklad">
-          <End Role="Sklad" Type="Self.Sklad" Multiplicity="1" />
-          <End Role="SkladZapch" Type="Self.SkladZapch" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sklad">
-              <PropertyRef Name="ID_Sklad" />
-            </Principal>
-            <Dependent Role="SkladZapch">
-              <PropertyRef Name="ID_Sklad" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SkladZapch_Zapchast">
-          <End Role="Zapchast" Type="Self.Zapchast" Multiplicity="1" />
-          <End Role="SkladZapch" Type="Self.SkladZapch" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Zapchast">
-              <PropertyRef Name="ID_Zapchast" />
-            </Principal>
-            <Dependent Role="SkladZapch">
-              <PropertyRef Name="ID_Zapchast" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="Хранилище nicoModelContainer">
-          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Salon" EntityType="Self.Salon" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Shop" EntityType="Self.Shop" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ShopZapchast" EntityType="Self.ShopZapchast" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Sklad" EntityType="Self.Sklad" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SkladZapch" EntityType="Self.SkladZapch" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Zapchast" EntityType="Self.Zapchast" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Order_Client" Association="Self.FK_Order_Client">
-            <End Role="Client" EntitySet="Client" />
-            <End Role="Order" EntitySet="Order" />
+        <EntityContainer Name="Хранилище nico_carServiceModelContainer">
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Part" EntityType="Self.Part" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Part_Inventorry" EntityType="Self.Part_Inventorry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Purchase_Queue" EntityType="Self.Purchase_Queue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Service" EntityType="Self.Service" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Part_Inventorry_Inventory" Association="Self.FK_Part_Inventorry_Inventory">
+            <End Role="Inventory" EntitySet="Inventory" />
+            <End Role="Part_Inventorry" EntitySet="Part_Inventorry" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_Salon" Association="Self.FK_Order_Salon">
-            <End Role="Salon" EntitySet="Salon" />
-            <End Role="Order" EntitySet="Order" />
+          <AssociationSet Name="FK_Part_Inventorry_Part" Association="Self.FK_Part_Inventorry_Part">
+            <End Role="Part" EntitySet="Part" />
+            <End Role="Part_Inventorry" EntitySet="Part_Inventorry" />
           </AssociationSet>
-          <AssociationSet Name="FK_Salon_Sklad" Association="Self.FK_Salon_Sklad">
-            <End Role="Sklad" EntitySet="Sklad" />
-            <End Role="Salon" EntitySet="Salon" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Shop_ShopZapchast" Association="Self.FK_Shop_ShopZapchast">
-            <End Role="ShopZapchast" EntitySet="ShopZapchast" />
-            <End Role="Shop" EntitySet="Shop" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sklad_Shop" Association="Self.FK_Sklad_Shop">
-            <End Role="Shop" EntitySet="Shop" />
-            <End Role="Sklad" EntitySet="Sklad" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SkladZapch_Sklad" Association="Self.FK_SkladZapch_Sklad">
-            <End Role="Sklad" EntitySet="Sklad" />
-            <End Role="SkladZapch" EntitySet="SkladZapch" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SkladZapch_Zapchast" Association="Self.FK_SkladZapch_Zapchast">
-            <End Role="Zapchast" EntitySet="Zapchast" />
-            <End Role="SkladZapch" EntitySet="SkladZapch" />
+          <AssociationSet Name="FK_Purchase_Queue_Part" Association="Self.FK_Purchase_Queue_Part">
+            <End Role="Part" EntitySet="Part" />
+            <End Role="Purchase_Queue" EntitySet="Purchase_Queue" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="nicoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Client">
+      <Schema Namespace="nico_carServiceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Inventory">
           <Key>
-            <PropertyRef Name="ID_Client" />
+            <PropertyRef Name="Inventory_ID" />
           </Key>
-          <Property Name="ID_Client" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_Order_Client" FromRole="Client" ToRole="Order" />
+          <Property Name="Inventory_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Cost" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Part_Inventorry" Relationship="Self.FK_Part_Inventorry_Inventory" FromRole="Inventory" ToRole="Part_Inventorry" />
         </EntityType>
-        <EntityType Name="Order">
+        <EntityType Name="Part">
           <Key>
-            <PropertyRef Name="ID_Order" />
+            <PropertyRef Name="Part_ID" />
           </Key>
-          <Property Name="ID_Order" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ID_Client" Type="Int32" Nullable="false" />
-          <Property Name="ID_Salon" Type="Int32" Nullable="false" />
-          <Property Name="price" Type="Double" Nullable="false" />
-          <Property Name="probliem" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="Self.FK_Order_Client" FromRole="Order" ToRole="Client" />
-          <NavigationProperty Name="Salon" Relationship="Self.FK_Order_Salon" FromRole="Order" ToRole="Salon" />
-        </EntityType>
-        <EntityType Name="Salon">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ID_Sklad" Type="Int32" Nullable="false" />
-          <Property Name="Money" Type="Double" Nullable="false" />
-          <Property Name="ID_Order" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_Order_Salon" FromRole="Salon" ToRole="Order" />
-          <NavigationProperty Name="Sklad" Relationship="Self.FK_Salon_Sklad" FromRole="Salon" ToRole="Sklad" />
-        </EntityType>
-        <EntityType Name="Shop">
-          <Key>
-            <PropertyRef Name="ID_Shop" />
-          </Key>
-          <Property Name="ID_Shop" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ID_ShopZapchast" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ShopZapchast" Relationship="Self.FK_Shop_ShopZapchast" FromRole="Shop" ToRole="ShopZapchast" />
-          <NavigationProperty Name="Sklad" Relationship="Self.FK_Sklad_Shop" FromRole="Shop" ToRole="Sklad" />
-        </EntityType>
-        <EntityType Name="ShopZapchast">
-          <Key>
-            <PropertyRef Name="ID_ShopZapchast" />
-          </Key>
-          <Property Name="ID_ShopZapchast" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Price" Type="Double" Nullable="false" />
-          <Property Name="Count" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Shop" Relationship="Self.FK_Shop_ShopZapchast" FromRole="ShopZapchast" ToRole="Shop" />
-        </EntityType>
-        <EntityType Name="Sklad">
-          <Key>
-            <PropertyRef Name="ID_Sklad" />
-          </Key>
-          <Property Name="ID_Sklad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ID_SkladZapch" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ID_Shop" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Salon" Relationship="Self.FK_Salon_Sklad" FromRole="Sklad" ToRole="Salon" />
-          <NavigationProperty Name="Shop" Relationship="Self.FK_Sklad_Shop" FromRole="Sklad" ToRole="Shop" />
-          <NavigationProperty Name="SkladZapch" Relationship="Self.FK_SkladZapch_Sklad" FromRole="Sklad" ToRole="SkladZapch" />
-        </EntityType>
-        <EntityType Name="SkladZapch">
-          <Key>
-            <PropertyRef Name="ID_SkladZapch" />
-          </Key>
-          <Property Name="ID_SkladZapch" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ID_Sklad" Type="Int32" Nullable="false" />
-          <Property Name="ID_Zapchast" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Sklad" Relationship="Self.FK_SkladZapch_Sklad" FromRole="SkladZapch" ToRole="Sklad" />
-          <NavigationProperty Name="Zapchast" Relationship="Self.FK_SkladZapch_Zapchast" FromRole="SkladZapch" ToRole="Zapchast" />
-        </EntityType>
-        <EntityType Name="Zapchast">
-          <Key>
-            <PropertyRef Name="ID_Zapchast" />
-          </Key>
-          <Property Name="ID_Zapchast" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Part_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Count" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Double" Nullable="false" />
-          <NavigationProperty Name="SkladZapch" Relationship="Self.FK_SkladZapch_Zapchast" FromRole="Zapchast" ToRole="SkladZapch" />
+          <Property Name="Puchase_price" Type="Int32" Nullable="false" />
+          <Property Name="Sell_price" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Part_Inventorry" Relationship="Self.FK_Part_Inventorry_Part" FromRole="Part" ToRole="Part_Inventorry" />
+          <NavigationProperty Name="Purchase_Queue" Relationship="Self.FK_Purchase_Queue_Part" FromRole="Part" ToRole="Purchase_Queue" />
         </EntityType>
-        <Association Name="FK_Order_Client">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
-          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+        <EntityType Name="Part_Inventorry">
+          <Key>
+            <PropertyRef Name="Part_Inventorry_ID" />
+          </Key>
+          <Property Name="Part_Inventorry_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Part_ID" Type="Int32" Nullable="false" />
+          <Property Name="Inventory_ID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK_Part_Inventorry_Inventory" FromRole="Part_Inventorry" ToRole="Inventory" />
+          <NavigationProperty Name="Part" Relationship="Self.FK_Part_Inventorry_Part" FromRole="Part_Inventorry" ToRole="Part" />
+        </EntityType>
+        <EntityType Name="Purchase_Queue">
+          <Key>
+            <PropertyRef Name="Purchase_Queue_ID" />
+          </Key>
+          <Property Name="Purchase_Queue_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Part_ID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Days_to_arrive" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Part" Relationship="Self.FK_Purchase_Queue_Part" FromRole="Purchase_Queue" ToRole="Part" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="Service_ID" />
+          </Key>
+          <Property Name="Service_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Balance" Type="Int32" Nullable="false" />
+          <Property Name="Current_day" Type="Int32" Nullable="false" />
+          <Property Name="Count_clients" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Part_Inventorry_Inventory">
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="1" />
+          <End Role="Part_Inventorry" Type="Self.Part_Inventorry" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="ID_Client" />
+            <Principal Role="Inventory">
+              <PropertyRef Name="Inventory_ID" />
             </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="ID_Client" />
+            <Dependent Role="Part_Inventorry">
+              <PropertyRef Name="Inventory_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_Salon">
-          <End Role="Salon" Type="Self.Salon" Multiplicity="1" />
-          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+        <Association Name="FK_Part_Inventorry_Part">
+          <End Role="Part" Type="Self.Part" Multiplicity="1" />
+          <End Role="Part_Inventorry" Type="Self.Part_Inventorry" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Salon">
-              <PropertyRef Name="ID" />
+            <Principal Role="Part">
+              <PropertyRef Name="Part_ID" />
             </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="ID_Salon" />
+            <Dependent Role="Part_Inventorry">
+              <PropertyRef Name="Part_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Salon_Sklad">
-          <End Role="Sklad" Type="Self.Sklad" Multiplicity="1" />
-          <End Role="Salon" Type="Self.Salon" Multiplicity="*" />
+        <Association Name="FK_Purchase_Queue_Part">
+          <End Role="Part" Type="Self.Part" Multiplicity="1" />
+          <End Role="Purchase_Queue" Type="Self.Purchase_Queue" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Sklad">
-              <PropertyRef Name="ID_Sklad" />
+            <Principal Role="Part">
+              <PropertyRef Name="Part_ID" />
             </Principal>
-            <Dependent Role="Salon">
-              <PropertyRef Name="ID_Sklad" />
+            <Dependent Role="Purchase_Queue">
+              <PropertyRef Name="Part_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Shop_ShopZapchast">
-          <End Role="ShopZapchast" Type="Self.ShopZapchast" Multiplicity="1" />
-          <End Role="Shop" Type="Self.Shop" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ShopZapchast">
-              <PropertyRef Name="ID_ShopZapchast" />
-            </Principal>
-            <Dependent Role="Shop">
-              <PropertyRef Name="ID_ShopZapchast" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Sklad_Shop">
-          <End Role="Shop" Type="Self.Shop" Multiplicity="1" />
-          <End Role="Sklad" Type="Self.Sklad" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Shop">
-              <PropertyRef Name="ID_Shop" />
-            </Principal>
-            <Dependent Role="Sklad">
-              <PropertyRef Name="ID_Shop" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SkladZapch_Sklad">
-          <End Role="Sklad" Type="Self.Sklad" Multiplicity="1" />
-          <End Role="SkladZapch" Type="Self.SkladZapch" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sklad">
-              <PropertyRef Name="ID_Sklad" />
-            </Principal>
-            <Dependent Role="SkladZapch">
-              <PropertyRef Name="ID_Sklad" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SkladZapch_Zapchast">
-          <End Role="Zapchast" Type="Self.Zapchast" Multiplicity="1" />
-          <End Role="SkladZapch" Type="Self.SkladZapch" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Zapchast">
-              <PropertyRef Name="ID_Zapchast" />
-            </Principal>
-            <Dependent Role="SkladZapch">
-              <PropertyRef Name="ID_Zapchast" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="nicoEntities2" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Client" EntityType="Self.Client" />
-          <EntitySet Name="Order" EntityType="Self.Order" />
-          <EntitySet Name="Salon" EntityType="Self.Salon" />
-          <EntitySet Name="Shop" EntityType="Self.Shop" />
-          <EntitySet Name="ShopZapchast" EntityType="Self.ShopZapchast" />
-          <EntitySet Name="Sklad" EntityType="Self.Sklad" />
-          <EntitySet Name="SkladZapch" EntityType="Self.SkladZapch" />
-          <EntitySet Name="Zapchast" EntityType="Self.Zapchast" />
-          <AssociationSet Name="FK_Order_Client" Association="Self.FK_Order_Client">
-            <End Role="Client" EntitySet="Client" />
-            <End Role="Order" EntitySet="Order" />
+        <EntityContainer Name="nico_carServiceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" />
+          <EntitySet Name="Part" EntityType="Self.Part" />
+          <EntitySet Name="Part_Inventorry" EntityType="Self.Part_Inventorry" />
+          <EntitySet Name="Purchase_Queue" EntityType="Self.Purchase_Queue" />
+          <EntitySet Name="Service" EntityType="Self.Service" />
+          <AssociationSet Name="FK_Part_Inventorry_Inventory" Association="Self.FK_Part_Inventorry_Inventory">
+            <End Role="Inventory" EntitySet="Inventory" />
+            <End Role="Part_Inventorry" EntitySet="Part_Inventorry" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_Salon" Association="Self.FK_Order_Salon">
-            <End Role="Salon" EntitySet="Salon" />
-            <End Role="Order" EntitySet="Order" />
+          <AssociationSet Name="FK_Part_Inventorry_Part" Association="Self.FK_Part_Inventorry_Part">
+            <End Role="Part" EntitySet="Part" />
+            <End Role="Part_Inventorry" EntitySet="Part_Inventorry" />
           </AssociationSet>
-          <AssociationSet Name="FK_Salon_Sklad" Association="Self.FK_Salon_Sklad">
-            <End Role="Sklad" EntitySet="Sklad" />
-            <End Role="Salon" EntitySet="Salon" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Shop_ShopZapchast" Association="Self.FK_Shop_ShopZapchast">
-            <End Role="ShopZapchast" EntitySet="ShopZapchast" />
-            <End Role="Shop" EntitySet="Shop" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sklad_Shop" Association="Self.FK_Sklad_Shop">
-            <End Role="Shop" EntitySet="Shop" />
-            <End Role="Sklad" EntitySet="Sklad" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SkladZapch_Sklad" Association="Self.FK_SkladZapch_Sklad">
-            <End Role="Sklad" EntitySet="Sklad" />
-            <End Role="SkladZapch" EntitySet="SkladZapch" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SkladZapch_Zapchast" Association="Self.FK_SkladZapch_Zapchast">
-            <End Role="Zapchast" EntitySet="Zapchast" />
-            <End Role="SkladZapch" EntitySet="SkladZapch" />
+          <AssociationSet Name="FK_Purchase_Queue_Part" Association="Self.FK_Purchase_Queue_Part">
+            <End Role="Part" EntitySet="Part" />
+            <End Role="Purchase_Queue" EntitySet="Purchase_Queue" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -411,81 +219,53 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище nicoModelContainer" CdmEntityContainer="nicoEntities2">
-          <EntitySetMapping Name="Client">
-            <EntityTypeMapping TypeName="nicoModel.Client">
-              <MappingFragment StoreEntitySet="Client">
-                <ScalarProperty Name="ID_Client" ColumnName="ID_Client" />
+        <EntityContainerMapping StorageEntityContainer="Хранилище nico_carServiceModelContainer" CdmEntityContainer="nico_carServiceEntities">
+          <EntitySetMapping Name="Inventory">
+            <EntityTypeMapping TypeName="nico_carServiceModel.Inventory">
+              <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="Inventory_ID" ColumnName="Inventory_ID" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Part">
+            <EntityTypeMapping TypeName="nico_carServiceModel.Part">
+              <MappingFragment StoreEntitySet="Part">
+                <ScalarProperty Name="Part_ID" ColumnName="Part_ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Puchase_price" ColumnName="Puchase_price" />
+                <ScalarProperty Name="Sell_price" ColumnName="Sell_price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Order">
-            <EntityTypeMapping TypeName="nicoModel.Order">
-              <MappingFragment StoreEntitySet="Order">
-                <ScalarProperty Name="ID_Order" ColumnName="ID_Order" />
-                <ScalarProperty Name="ID_Client" ColumnName="ID_Client" />
-                <ScalarProperty Name="ID_Salon" ColumnName="ID_Salon" />
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="probliem" ColumnName="probliem" />
+          <EntitySetMapping Name="Part_Inventorry">
+            <EntityTypeMapping TypeName="nico_carServiceModel.Part_Inventorry">
+              <MappingFragment StoreEntitySet="Part_Inventorry">
+                <ScalarProperty Name="Part_Inventorry_ID" ColumnName="Part_Inventorry_ID" />
+                <ScalarProperty Name="Part_ID" ColumnName="Part_ID" />
+                <ScalarProperty Name="Inventory_ID" ColumnName="Inventory_ID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Salon">
-            <EntityTypeMapping TypeName="nicoModel.Salon">
-              <MappingFragment StoreEntitySet="Salon">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID_Sklad" ColumnName="ID_Sklad" />
-                <ScalarProperty Name="Money" ColumnName="Money" />
-                <ScalarProperty Name="ID_Order" ColumnName="ID_Order" />
+          <EntitySetMapping Name="Purchase_Queue">
+            <EntityTypeMapping TypeName="nico_carServiceModel.Purchase_Queue">
+              <MappingFragment StoreEntitySet="Purchase_Queue">
+                <ScalarProperty Name="Purchase_Queue_ID" ColumnName="Purchase_Queue_ID" />
+                <ScalarProperty Name="Part_ID" ColumnName="Part_ID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Days_to_arrive" ColumnName="Days_to_arrive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Shop">
-            <EntityTypeMapping TypeName="nicoModel.Shop">
-              <MappingFragment StoreEntitySet="Shop">
-                <ScalarProperty Name="ID_Shop" ColumnName="ID_Shop" />
-                <ScalarProperty Name="ID_ShopZapchast" ColumnName="ID_ShopZapchast" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ShopZapchast">
-            <EntityTypeMapping TypeName="nicoModel.ShopZapchast">
-              <MappingFragment StoreEntitySet="ShopZapchast">
-                <ScalarProperty Name="ID_ShopZapchast" ColumnName="ID_ShopZapchast" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Count" ColumnName="Count" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Sklad">
-            <EntityTypeMapping TypeName="nicoModel.Sklad">
-              <MappingFragment StoreEntitySet="Sklad">
-                <ScalarProperty Name="ID_Sklad" ColumnName="ID_Sklad" />
-                <ScalarProperty Name="ID_SkladZapch" ColumnName="ID_SkladZapch" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID_Shop" ColumnName="ID_Shop" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SkladZapch">
-            <EntityTypeMapping TypeName="nicoModel.SkladZapch">
-              <MappingFragment StoreEntitySet="SkladZapch">
-                <ScalarProperty Name="ID_SkladZapch" ColumnName="ID_SkladZapch" />
-                <ScalarProperty Name="ID_Sklad" ColumnName="ID_Sklad" />
-                <ScalarProperty Name="ID_Zapchast" ColumnName="ID_Zapchast" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Zapchast">
-            <EntityTypeMapping TypeName="nicoModel.Zapchast">
-              <MappingFragment StoreEntitySet="Zapchast">
-                <ScalarProperty Name="ID_Zapchast" ColumnName="ID_Zapchast" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Count" ColumnName="Count" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
+          <EntitySetMapping Name="Service">
+            <EntityTypeMapping TypeName="nico_carServiceModel.Service">
+              <MappingFragment StoreEntitySet="Service">
+                <ScalarProperty Name="Service_ID" ColumnName="Service_ID" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Current_day" ColumnName="Current_day" />
+                <ScalarProperty Name="Count_clients" ColumnName="Count_clients" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

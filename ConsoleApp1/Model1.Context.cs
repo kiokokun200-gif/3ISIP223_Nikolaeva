@@ -13,10 +13,10 @@ namespace ConsoleApp1
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class nicoEntities2 : DbContext
+    public partial class nico_carServiceEntities : DbContext
     {
-        public nicoEntities2()
-            : base("name=nicoEntities2")
+        public nico_carServiceEntities()
+            : base("name=nico_carServiceEntities")
         {
         }
     
@@ -25,13 +25,10 @@ namespace ConsoleApp1
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Client> Client { get; set; }
-        public virtual DbSet<Order> Order { get; set; }
-        public virtual DbSet<Salon> Salon { get; set; }
-        public virtual DbSet<Shop> Shop { get; set; }
-        public virtual DbSet<ShopZapchast> ShopZapchast { get; set; }
-        public virtual DbSet<Sklad> Sklad { get; set; }
-        public virtual DbSet<SkladZapch> SkladZapch { get; set; }
-        public virtual DbSet<Zapchast> Zapchast { get; set; }
+        public virtual DbSet<Inventory> Inventory { get; set; }
+        public virtual DbSet<Part> Part { get; set; }
+        public virtual DbSet<Part_Inventorry> Part_Inventorry { get; set; }
+        public virtual DbSet<Purchase_Queue> Purchase_Queue { get; set; }
+        public virtual DbSet<Service> Service { get; set; }
     }
 }

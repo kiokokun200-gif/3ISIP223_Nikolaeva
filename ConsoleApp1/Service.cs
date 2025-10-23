@@ -12,20 +12,11 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Zapchast
+    public partial class Service
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Zapchast()
-        {
-            this.SkladZapch = new HashSet<SkladZapch>();
-        }
-    
-        public int ID_Zapchast { get; set; }
-        public string Name { get; set; }
-        public int Count { get; set; }
-        public double Price { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SkladZapch> SkladZapch { get; set; }
+        public int Service_ID { get; set; }
+        public int Balance { get; set; }
+        public int Current_day { get; set; }
+        public int Count_clients { get; set; }
     }
 }
