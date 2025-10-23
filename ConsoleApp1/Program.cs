@@ -45,7 +45,7 @@ namespace AutoServiceGame
                 parts = context.Part.ToList();
 
                 Console.WriteLine("Данные успешно загружены!");
-                Console.WriteLine($"Баланс: {service.Balance:C0}");
+                Console.WriteLine($"Баланс: {service.Balance } Р");
                 Console.WriteLine("Нажмите любую клавишу для продолжения...");
                 Console.ReadKey();
             }
