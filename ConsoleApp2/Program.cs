@@ -122,12 +122,12 @@ namespace ConsoleApp2
 
                 foreach (var product in products)
                 {
-                    var category = Core.Context.Categories.FirstOrDefault(c => c.CategoryID == product.CategoryID);
+                    //var category = Core.Context.Categories.FirstOrDefault(c => c.CategoryID == product.CategoryID);
                     Console.WriteLine($"{product.ProductID}. {product.ProductName}");
                     Console.WriteLine($"   Описание: {product.Description}");
                     Console.WriteLine($"   Цена: {product.Price} руб.");
                     Console.WriteLine($"   В наличии: {product.StockQuantity} шт.");
-                    Console.WriteLine($"   Категория: {category?.CategoryName}");
+                    Console.WriteLine($"   Категория: {product.Categories.CategoryName}");
                     Console.WriteLine("   " + new string('-', 40));
                 }
 
@@ -227,7 +227,7 @@ namespace ConsoleApp2
                 if (user != null)
                 {
                     CurrentUser = user;
-                    Console.WriteLine($"Успешный вход! Добро пожаловать, {user.Login}!");
+                    Console.WriteLine($"Успешный вход! Добро пожаловать, {user.Name}!");
                 }
                 else
                 {
@@ -343,7 +343,6 @@ namespace ConsoleApp2
 
                         Console.WriteLine($"{itemNumber}. {product.ProductName}");
                         Console.WriteLine($"   Цена: {product.Price} руб. × {item.Quantity} = {itemTotal} руб.");
-                        Console.WriteLine($"   ID в корзине: {item.CartItemID}");
                         Console.WriteLine();
                         itemNumber++;
                     }
@@ -364,7 +363,7 @@ namespace ConsoleApp2
                         Checkout();
                         break;
                     case "2":
-                        RemoveFromCart();
+                        RemoveFromCartByNumber(cartItems); // Передаем список товаров
                         break;
                     case "3":
                         ClearCart();
@@ -382,26 +381,25 @@ namespace ConsoleApp2
             }
         }
 
-        public void RemoveFromCart()
+        public void RemoveFromCartByNumber(List<CartItems> cartItems)
         {
-            Console.Write("Введите ID товара в корзине для удаления: ");
-            if (int.TryParse(Console.ReadLine(), out int cartItemId))
+            if (!cartItems.Any())
+            {
+                Console.WriteLine("Корзина пуста!");
+                return;
+            }
+
+            Console.Write("Введите номер товара для удаления: ");
+            if (int.TryParse(Console.ReadLine(), out int itemNumber) && itemNumber > 0 && itemNumber <= cartItems.Count)
             {
                 try
                 {
-                    var cartItem = Core.Context.CartItems
-                        .FirstOrDefault(c => c.CartItemID == cartItemId && c.UserID == CurrentUser.UserID);
+                    var itemToRemove = cartItems[itemNumber - 1]; // -1 потому что нумерация с 1
+                    var product = Core.Context.Products.FirstOrDefault(p => p.ProductID == itemToRemove.ProductID);
 
-                    if (cartItem != null)
-                    {
-                        Core.Context.CartItems.Remove(cartItem);
-                        Core.Context.SaveChanges();
-                        Console.WriteLine("Товар удален из корзины!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Товар не найден в корзине!");
-                    }
+                    Core.Context.CartItems.Remove(itemToRemove);
+                    Core.Context.SaveChanges();
+                    Console.WriteLine($"Товар '{product?.ProductName}' удален из корзины!");
                 }
                 catch (Exception ex)
                 {
@@ -410,10 +408,9 @@ namespace ConsoleApp2
             }
             else
             {
-                Console.WriteLine("Неверный ID товара!");
+                Console.WriteLine($"Неверный номер товара! Введите число от 1 до {cartItems.Count}");
             }
         }
-
         public void ClearCart()
         {
             try
@@ -515,7 +512,8 @@ namespace ConsoleApp2
                             OrderID = order.OrderID,
                             ProductID = item.ProductID,
                             Quantity = item.Quantity,
-                            Price = product.Price
+                            Price = product.Price,
+                            CartItemID = item.CartItemID
                         };
                         Core.Context.OrderItems.Add(orderItem);
 
