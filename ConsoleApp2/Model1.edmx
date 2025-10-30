@@ -32,7 +32,7 @@
           <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="CartItemID" Type="int" Nullable="false" />
+          <Property Name="CartItemID" Type="int" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -100,7 +100,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__OrderItem__CartI__656C112C">
-          <End Role="CartItems" Type="Self.CartItems" Multiplicity="1" />
+          <End Role="CartItems" Type="Self.CartItems" Multiplicity="0..1" />
           <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CartItems">
@@ -248,7 +248,7 @@
           <Property Name="ProductID" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="CartItemID" Type="Int32" Nullable="false" />
+          <Property Name="CartItemID" Type="Int32" />
           <NavigationProperty Name="CartItems" Relationship="Self.FK__OrderItem__CartI__656C112C" FromRole="OrderItems" ToRole="CartItems" />
           <NavigationProperty Name="Orders" Relationship="Self.FK__OrderItem__Order__6383C8BA" FromRole="OrderItems" ToRole="Orders" />
           <NavigationProperty Name="Products" Relationship="Self.FK__OrderItem__Produ__6477ECF3" FromRole="OrderItems" ToRole="Products" />
@@ -328,7 +328,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__OrderItem__CartI__656C112C">
-          <End Role="CartItems" Type="Self.CartItems" Multiplicity="1" />
+          <End Role="CartItems" Type="Self.CartItems" Multiplicity="0..1" />
           <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CartItems">

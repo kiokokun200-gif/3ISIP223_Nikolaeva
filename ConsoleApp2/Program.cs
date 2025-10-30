@@ -318,8 +318,8 @@ namespace ConsoleApp2
 
             Console.WriteLine("\n=== КОРЗИНА ===");
 
-            try
-            {
+            //try
+            //{
                 var cartItems = Core.Context.CartItems
                     .Where(c => c.UserID == CurrentUser.UserID)
                     .ToList();
@@ -374,11 +374,11 @@ namespace ConsoleApp2
                         Console.WriteLine("Неверный выбор!");
                         break;
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при загрузке корзины: {ex.Message}");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Ошибка при загрузке корзины: {ex.Message}");
+            //}
         }
 
         public void RemoveFromCartByNumber(List<CartItems> cartItems)
@@ -392,19 +392,19 @@ namespace ConsoleApp2
             Console.Write("Введите номер товара для удаления: ");
             if (int.TryParse(Console.ReadLine(), out int itemNumber) && itemNumber > 0 && itemNumber <= cartItems.Count)
             {
-                try
-                {
+                //try
+                //{
                     var itemToRemove = cartItems[itemNumber - 1]; // -1 потому что нумерация с 1
                     var product = Core.Context.Products.FirstOrDefault(p => p.ProductID == itemToRemove.ProductID);
 
                     Core.Context.CartItems.Remove(itemToRemove);
                     Core.Context.SaveChanges();
                     Console.WriteLine($"Товар '{product?.ProductName}' удален из корзины!");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка при удалении из корзины: {ex.Message}");
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"Ошибка при удалении из корзины: {ex.Message}");
+                //}
             }
             else
             {
@@ -444,8 +444,8 @@ namespace ConsoleApp2
                 return;
             }
 
-            try
-            {
+            //try
+            //{
                 var cartItems = Core.Context.CartItems
                     .Where(c => c.UserID == CurrentUser.UserID)
                     .ToList();
@@ -490,6 +490,9 @@ namespace ConsoleApp2
                         totalAmount += product.Price * item.Quantity;
                     }
 
+                    // СОХРАНЯЕМ CartItems ID для использования
+                    var cartItemIds = cartItems.Select(c => c.CartItemID).ToList();
+
                     // Создаем заказ
                     var order = new Orders
                     {
@@ -521,7 +524,10 @@ namespace ConsoleApp2
                         product.StockQuantity -= item.Quantity;
                     }
 
-                    // Очищаем корзину
+                    // Сохраняем OrderItems ПЕРЕД удалением CartItems
+                    Core.Context.SaveChanges();
+
+                    // Теперь очищаем корзину
                     Core.Context.CartItems.RemoveRange(cartItems);
                     Core.Context.SaveChanges();
 
@@ -539,11 +545,11 @@ namespace ConsoleApp2
                 {
                     Console.WriteLine("Неверный выбор ПВЗ!");
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при оформлении заказа: {ex.Message}");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Ошибка при оформлении заказа: {ex.Message}");
+            //}
         }
 
         public void ViewOrders()
