@@ -18,10 +18,8 @@ namespace ConsoleApp2
         public int OrderID { get; set; }
         public int ProductID { get; set; }
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public Nullable<int> CartItemID { get; set; }
+        public decimal UnitPrice { get; set; }
     
-        public virtual CartItems CartItems { get; set; }
         public virtual Orders Orders { get; set; }
         public virtual Products Products { get; set; }
     }

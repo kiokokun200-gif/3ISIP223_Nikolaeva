@@ -8,6 +8,6 @@ namespace ConsoleApp2
 {
     internal class Core
     {
-        public static nico_MarketplaceEntities Context = new nico_MarketplaceEntities();
+        public static nico_MarketplaceEntities1 Context = new nico_MarketplaceEntities1();
     }
 }

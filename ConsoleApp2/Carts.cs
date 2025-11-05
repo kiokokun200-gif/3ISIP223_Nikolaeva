@@ -12,26 +12,20 @@ namespace ConsoleApp2
     using System;
     using System.Collections.Generic;
     
-    public partial class Products
+    public partial class Carts
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Products()
+        public Carts()
         {
             this.CartItems = new HashSet<CartItems>();
-            this.OrderItems = new HashSet<OrderItems>();
         }
     
-        public int ProductID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public int StockQuantity { get; set; }
-        public int CategoryID { get; set; }
+        public int CartID { get; set; }
+        public int UserID { get; set; }
+        public System.DateTime CreatedAt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartItems> CartItems { get; set; }
-        public virtual Categories Categories { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderItems> OrderItems { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

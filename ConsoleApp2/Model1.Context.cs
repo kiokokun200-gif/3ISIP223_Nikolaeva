@@ -13,10 +13,10 @@ namespace ConsoleApp2
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class nico_MarketplaceEntities : DbContext
+    public partial class nico_MarketplaceEntities1 : DbContext
     {
-        public nico_MarketplaceEntities()
-            : base("name=nico_MarketplaceEntities")
+        public nico_MarketplaceEntities1()
+            : base("name=nico_MarketplaceEntities1")
         {
         }
     
@@ -26,6 +26,7 @@ namespace ConsoleApp2
         }
     
         public virtual DbSet<CartItems> CartItems { get; set; }
+        public virtual DbSet<Carts> Carts { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<OrderItems> OrderItems { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }

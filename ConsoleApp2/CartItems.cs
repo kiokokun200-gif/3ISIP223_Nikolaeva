@@ -14,21 +14,12 @@ namespace ConsoleApp2
     
     public partial class CartItems
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CartItems()
-        {
-            this.OrderItems = new HashSet<OrderItems>();
-        }
-    
         public int CartItemID { get; set; }
-        public int UserID { get; set; }
+        public int CartID { get; set; }
         public int ProductID { get; set; }
         public int Quantity { get; set; }
-        public Nullable<System.DateTime> AddedDate { get; set; }
     
+        public virtual Carts Carts { get; set; }
         public virtual Products Products { get; set; }
-        public virtual Users Users { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderItems> OrderItems { get; set; }
     }
 }

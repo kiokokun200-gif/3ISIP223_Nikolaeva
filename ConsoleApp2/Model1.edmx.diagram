@@ -4,22 +4,23 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ab87b03cbe634294a252577c63f12594" Name="Diagram1">
-        <EntityTypeShape EntityType="nico_MarketplaceModel.CartItems" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_MarketplaceModel.Categories" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_MarketplaceModel.OrderItems" Width="1.5" PointX="7.5" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_MarketplaceModel.Orders" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_MarketplaceModel.PickupPoints" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_MarketplaceModel.Products" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_MarketplaceModel.Users" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
-        <AssociationConnector Association="nico_MarketplaceModel.FK__CartItems__Produ__59063A47" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_MarketplaceModel.FK__CartItems__UserI__5812160E" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_MarketplaceModel.FK__OrderItem__CartI__656C112C" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_MarketplaceModel.FK__Products__Catego__52593CB8" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_MarketplaceModel.FK__OrderItem__Order__6383C8BA" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_MarketplaceModel.FK__OrderItem__Produ__6477ECF3" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_MarketplaceModel.FK__Orders__PointID__5FB337D6" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_MarketplaceModel.FK__Orders__UserID__5DCAEF64" ManuallyRouted="false" />
+      <Diagram DiagramId="c8a284ff16c847d2a836277c79aaa055" Name="Diagram1">
+        <EntityTypeShape EntityType="nico_MarketplaceModel.CartItems" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_MarketplaceModel.Carts" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_MarketplaceModel.Categories" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_MarketplaceModel.OrderItems" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_MarketplaceModel.Orders" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_MarketplaceModel.PickupPoints" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_MarketplaceModel.Products" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_MarketplaceModel.Users" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <AssociationConnector Association="nico_MarketplaceModel.FK__CartItems__CartI__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_MarketplaceModel.FK__CartItems__Produ__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_MarketplaceModel.FK__Carts__UserID__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_MarketplaceModel.FK__Products__Catego__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_MarketplaceModel.FK__OrderItem__Order__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_MarketplaceModel.FK__OrderItem__Produ__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_MarketplaceModel.FK__Orders__PickupPo__6383C8BA" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_MarketplaceModel.FK__Orders__UserID__628FA481" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
