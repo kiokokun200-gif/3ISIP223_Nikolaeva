@@ -4,214 +4,196 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище nico_carServiceModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Inventory">
+      <Schema Namespace="Хранилище nico_carsModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
           <Key>
-            <PropertyRef Name="Inventory_ID" />
+            <PropertyRef Name="ID_Client" />
           </Key>
-          <Property Name="Inventory_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PurchaseDate" Type="date" Nullable="false" />
-          <Property Name="Cost" Type="int" Nullable="false" />
+          <Property Name="ID_Client" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="Part">
+        <EntityType Name="Detail">
           <Key>
-            <PropertyRef Name="Part_ID" />
+            <PropertyRef Name="ID_Detail" />
           </Key>
-          <Property Name="Part_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Detail" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Puchase_price" Type="int" Nullable="false" />
-          <Property Name="Sell_price" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Part_Inventorry">
-          <Key>
-            <PropertyRef Name="Part_Inventorry_ID" />
-          </Key>
-          <Property Name="Part_Inventorry_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Part_ID" Type="int" Nullable="false" />
-          <Property Name="Inventory_ID" Type="int" Nullable="false" />
+          <Property Name="PurchasePrice" Type="float" Nullable="false" />
+          <Property Name="SellPrice" Type="float" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Purchase_Queue">
+        <EntityType Name="Order">
           <Key>
-            <PropertyRef Name="Purchase_Queue_ID" />
+            <PropertyRef Name="ID_Order" />
           </Key>
-          <Property Name="Purchase_Queue_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Part_ID" Type="int" Nullable="false" />
+          <Property Name="ID_Order" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Client" Type="int" Nullable="false" />
+          <Property Name="ID_Detail" Type="int" Nullable="false" />
+          <Property Name="Price" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Purchase">
+          <Key>
+            <PropertyRef Name="ID_Purchase" />
+          </Key>
+          <Property Name="ID_Purchase" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Detail" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="Days_to_arrive" Type="int" Nullable="false" />
+          <Property Name="Total_price" Type="float" Nullable="false" />
+          <Property Name="Days_to_arrival" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Service">
-          <Key>
-            <PropertyRef Name="Service_ID" />
-          </Key>
-          <Property Name="Service_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Balance" Type="int" Nullable="false" />
-          <Property Name="Current_day" Type="int" Nullable="false" />
-          <Property Name="Count_clients" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_Part_Inventorry_Inventory">
-          <End Role="Inventory" Type="Self.Inventory" Multiplicity="1" />
-          <End Role="Part_Inventorry" Type="Self.Part_Inventorry" Multiplicity="*" />
+        <Association Name="FK_Order_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Inventory">
-              <PropertyRef Name="Inventory_ID" />
+            <Principal Role="Client">
+              <PropertyRef Name="ID_Client" />
             </Principal>
-            <Dependent Role="Part_Inventorry">
-              <PropertyRef Name="Inventory_ID" />
+            <Dependent Role="Order">
+              <PropertyRef Name="ID_Client" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Part_Inventorry_Part">
-          <End Role="Part" Type="Self.Part" Multiplicity="1" />
-          <End Role="Part_Inventorry" Type="Self.Part_Inventorry" Multiplicity="*" />
+        <Association Name="FK_Order_Detail">
+          <End Role="Detail" Type="Self.Detail" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Part">
-              <PropertyRef Name="Part_ID" />
+            <Principal Role="Detail">
+              <PropertyRef Name="ID_Detail" />
             </Principal>
-            <Dependent Role="Part_Inventorry">
-              <PropertyRef Name="Part_ID" />
+            <Dependent Role="Order">
+              <PropertyRef Name="ID_Detail" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Purchase_Queue_Part">
-          <End Role="Part" Type="Self.Part" Multiplicity="1" />
-          <End Role="Purchase_Queue" Type="Self.Purchase_Queue" Multiplicity="*" />
+        <Association Name="FK_Purchase_Detail">
+          <End Role="Detail" Type="Self.Detail" Multiplicity="1" />
+          <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Part">
-              <PropertyRef Name="Part_ID" />
+            <Principal Role="Detail">
+              <PropertyRef Name="ID_Detail" />
             </Principal>
-            <Dependent Role="Purchase_Queue">
-              <PropertyRef Name="Part_ID" />
+            <Dependent Role="Purchase">
+              <PropertyRef Name="ID_Detail" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище nico_carServiceModelContainer">
-          <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Part" EntityType="Self.Part" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Part_Inventorry" EntityType="Self.Part_Inventorry" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Purchase_Queue" EntityType="Self.Purchase_Queue" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Service" EntityType="Self.Service" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Part_Inventorry_Inventory" Association="Self.FK_Part_Inventorry_Inventory">
-            <End Role="Inventory" EntitySet="Inventory" />
-            <End Role="Part_Inventorry" EntitySet="Part_Inventorry" />
+        <EntityContainer Name="Хранилище nico_carsModelContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Detail" EntityType="Self.Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Purchase" EntityType="Self.Purchase" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Order_Client" Association="Self.FK_Order_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Order" EntitySet="Order" />
           </AssociationSet>
-          <AssociationSet Name="FK_Part_Inventorry_Part" Association="Self.FK_Part_Inventorry_Part">
-            <End Role="Part" EntitySet="Part" />
-            <End Role="Part_Inventorry" EntitySet="Part_Inventorry" />
+          <AssociationSet Name="FK_Order_Detail" Association="Self.FK_Order_Detail">
+            <End Role="Detail" EntitySet="Detail" />
+            <End Role="Order" EntitySet="Order" />
           </AssociationSet>
-          <AssociationSet Name="FK_Purchase_Queue_Part" Association="Self.FK_Purchase_Queue_Part">
-            <End Role="Part" EntitySet="Part" />
-            <End Role="Purchase_Queue" EntitySet="Purchase_Queue" />
+          <AssociationSet Name="FK_Purchase_Detail" Association="Self.FK_Purchase_Detail">
+            <End Role="Detail" EntitySet="Detail" />
+            <End Role="Purchase" EntitySet="Purchase" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="nico_carServiceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Inventory">
+      <Schema Namespace="nico_carsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
           <Key>
-            <PropertyRef Name="Inventory_ID" />
+            <PropertyRef Name="ID_Client" />
           </Key>
-          <Property Name="Inventory_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Cost" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Part_Inventorry" Relationship="Self.FK_Part_Inventorry_Inventory" FromRole="Inventory" ToRole="Part_Inventorry" />
+          <Property Name="ID_Client" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Order_Client" FromRole="Client" ToRole="Order" />
         </EntityType>
-        <EntityType Name="Part">
+        <EntityType Name="Detail">
           <Key>
-            <PropertyRef Name="Part_ID" />
+            <PropertyRef Name="ID_Detail" />
           </Key>
-          <Property Name="Part_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Detail" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Puchase_price" Type="Int32" Nullable="false" />
-          <Property Name="Sell_price" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Part_Inventorry" Relationship="Self.FK_Part_Inventorry_Part" FromRole="Part" ToRole="Part_Inventorry" />
-          <NavigationProperty Name="Purchase_Queue" Relationship="Self.FK_Purchase_Queue_Part" FromRole="Part" ToRole="Purchase_Queue" />
-        </EntityType>
-        <EntityType Name="Part_Inventorry">
-          <Key>
-            <PropertyRef Name="Part_Inventorry_ID" />
-          </Key>
-          <Property Name="Part_Inventorry_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Part_ID" Type="Int32" Nullable="false" />
-          <Property Name="Inventory_ID" Type="Int32" Nullable="false" />
+          <Property Name="PurchasePrice" Type="Double" Nullable="false" />
+          <Property Name="SellPrice" Type="Double" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Inventory" Relationship="Self.FK_Part_Inventorry_Inventory" FromRole="Part_Inventorry" ToRole="Inventory" />
-          <NavigationProperty Name="Part" Relationship="Self.FK_Part_Inventorry_Part" FromRole="Part_Inventorry" ToRole="Part" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Order_Detail" FromRole="Detail" ToRole="Order" />
+          <NavigationProperty Name="Purchase" Relationship="Self.FK_Purchase_Detail" FromRole="Detail" ToRole="Purchase" />
         </EntityType>
-        <EntityType Name="Purchase_Queue">
+        <EntityType Name="Order">
           <Key>
-            <PropertyRef Name="Purchase_Queue_ID" />
+            <PropertyRef Name="ID_Order" />
           </Key>
-          <Property Name="Purchase_Queue_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Part_ID" Type="Int32" Nullable="false" />
+          <Property Name="ID_Order" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Client" Type="Int32" Nullable="false" />
+          <Property Name="ID_Detail" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Order_Client" FromRole="Order" ToRole="Client" />
+          <NavigationProperty Name="Detail" Relationship="Self.FK_Order_Detail" FromRole="Order" ToRole="Detail" />
+        </EntityType>
+        <EntityType Name="Purchase">
+          <Key>
+            <PropertyRef Name="ID_Purchase" />
+          </Key>
+          <Property Name="ID_Purchase" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Detail" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="Days_to_arrive" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Part" Relationship="Self.FK_Purchase_Queue_Part" FromRole="Purchase_Queue" ToRole="Part" />
+          <Property Name="Total_price" Type="Double" Nullable="false" />
+          <Property Name="Days_to_arrival" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Detail" Relationship="Self.FK_Purchase_Detail" FromRole="Purchase" ToRole="Detail" />
         </EntityType>
-        <EntityType Name="Service">
-          <Key>
-            <PropertyRef Name="Service_ID" />
-          </Key>
-          <Property Name="Service_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Balance" Type="Int32" Nullable="false" />
-          <Property Name="Current_day" Type="Int32" Nullable="false" />
-          <Property Name="Count_clients" Type="Int32" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_Part_Inventorry_Inventory">
-          <End Role="Inventory" Type="Self.Inventory" Multiplicity="1" />
-          <End Role="Part_Inventorry" Type="Self.Part_Inventorry" Multiplicity="*" />
+        <Association Name="FK_Order_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Inventory">
-              <PropertyRef Name="Inventory_ID" />
+            <Principal Role="Client">
+              <PropertyRef Name="ID_Client" />
             </Principal>
-            <Dependent Role="Part_Inventorry">
-              <PropertyRef Name="Inventory_ID" />
+            <Dependent Role="Order">
+              <PropertyRef Name="ID_Client" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Part_Inventorry_Part">
-          <End Role="Part" Type="Self.Part" Multiplicity="1" />
-          <End Role="Part_Inventorry" Type="Self.Part_Inventorry" Multiplicity="*" />
+        <Association Name="FK_Order_Detail">
+          <End Role="Detail" Type="Self.Detail" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Part">
-              <PropertyRef Name="Part_ID" />
+            <Principal Role="Detail">
+              <PropertyRef Name="ID_Detail" />
             </Principal>
-            <Dependent Role="Part_Inventorry">
-              <PropertyRef Name="Part_ID" />
+            <Dependent Role="Order">
+              <PropertyRef Name="ID_Detail" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Purchase_Queue_Part">
-          <End Role="Part" Type="Self.Part" Multiplicity="1" />
-          <End Role="Purchase_Queue" Type="Self.Purchase_Queue" Multiplicity="*" />
+        <Association Name="FK_Purchase_Detail">
+          <End Role="Detail" Type="Self.Detail" Multiplicity="1" />
+          <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Part">
-              <PropertyRef Name="Part_ID" />
+            <Principal Role="Detail">
+              <PropertyRef Name="ID_Detail" />
             </Principal>
-            <Dependent Role="Purchase_Queue">
-              <PropertyRef Name="Part_ID" />
+            <Dependent Role="Purchase">
+              <PropertyRef Name="ID_Detail" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="nico_carServiceEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Inventory" EntityType="Self.Inventory" />
-          <EntitySet Name="Part" EntityType="Self.Part" />
-          <EntitySet Name="Part_Inventorry" EntityType="Self.Part_Inventorry" />
-          <EntitySet Name="Purchase_Queue" EntityType="Self.Purchase_Queue" />
-          <EntitySet Name="Service" EntityType="Self.Service" />
-          <AssociationSet Name="FK_Part_Inventorry_Inventory" Association="Self.FK_Part_Inventorry_Inventory">
-            <End Role="Inventory" EntitySet="Inventory" />
-            <End Role="Part_Inventorry" EntitySet="Part_Inventorry" />
+        <EntityContainer Name="nico_carsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Client" EntityType="Self.Client" />
+          <EntitySet Name="Detail" EntityType="Self.Detail" />
+          <EntitySet Name="Order" EntityType="Self.Order" />
+          <EntitySet Name="Purchase" EntityType="Self.Purchase" />
+          <AssociationSet Name="FK_Order_Client" Association="Self.FK_Order_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Order" EntitySet="Order" />
           </AssociationSet>
-          <AssociationSet Name="FK_Part_Inventorry_Part" Association="Self.FK_Part_Inventorry_Part">
-            <End Role="Part" EntitySet="Part" />
-            <End Role="Part_Inventorry" EntitySet="Part_Inventorry" />
+          <AssociationSet Name="FK_Order_Detail" Association="Self.FK_Order_Detail">
+            <End Role="Detail" EntitySet="Detail" />
+            <End Role="Order" EntitySet="Order" />
           </AssociationSet>
-          <AssociationSet Name="FK_Purchase_Queue_Part" Association="Self.FK_Purchase_Queue_Part">
-            <End Role="Part" EntitySet="Part" />
-            <End Role="Purchase_Queue" EntitySet="Purchase_Queue" />
+          <AssociationSet Name="FK_Purchase_Detail" Association="Self.FK_Purchase_Detail">
+            <End Role="Detail" EntitySet="Detail" />
+            <End Role="Purchase" EntitySet="Purchase" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -219,53 +201,44 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище nico_carServiceModelContainer" CdmEntityContainer="nico_carServiceEntities">
-          <EntitySetMapping Name="Inventory">
-            <EntityTypeMapping TypeName="nico_carServiceModel.Inventory">
-              <MappingFragment StoreEntitySet="Inventory">
-                <ScalarProperty Name="Inventory_ID" ColumnName="Inventory_ID" />
-                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
-                <ScalarProperty Name="Cost" ColumnName="Cost" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Part">
-            <EntityTypeMapping TypeName="nico_carServiceModel.Part">
-              <MappingFragment StoreEntitySet="Part">
-                <ScalarProperty Name="Part_ID" ColumnName="Part_ID" />
+        <EntityContainerMapping StorageEntityContainer="Хранилище nico_carsModelContainer" CdmEntityContainer="nico_carsEntities">
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="nico_carsModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="ID_Client" ColumnName="ID_Client" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Puchase_price" ColumnName="Puchase_price" />
-                <ScalarProperty Name="Sell_price" ColumnName="Sell_price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Part_Inventorry">
-            <EntityTypeMapping TypeName="nico_carServiceModel.Part_Inventorry">
-              <MappingFragment StoreEntitySet="Part_Inventorry">
-                <ScalarProperty Name="Part_Inventorry_ID" ColumnName="Part_Inventorry_ID" />
-                <ScalarProperty Name="Part_ID" ColumnName="Part_ID" />
-                <ScalarProperty Name="Inventory_ID" ColumnName="Inventory_ID" />
+          <EntitySetMapping Name="Detail">
+            <EntityTypeMapping TypeName="nico_carsModel.Detail">
+              <MappingFragment StoreEntitySet="Detail">
+                <ScalarProperty Name="ID_Detail" ColumnName="ID_Detail" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Purchase_Queue">
-            <EntityTypeMapping TypeName="nico_carServiceModel.Purchase_Queue">
-              <MappingFragment StoreEntitySet="Purchase_Queue">
-                <ScalarProperty Name="Purchase_Queue_ID" ColumnName="Purchase_Queue_ID" />
-                <ScalarProperty Name="Part_ID" ColumnName="Part_ID" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Days_to_arrive" ColumnName="Days_to_arrive" />
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="nico_carsModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="ID_Order" ColumnName="ID_Order" />
+                <ScalarProperty Name="ID_Client" ColumnName="ID_Client" />
+                <ScalarProperty Name="ID_Detail" ColumnName="ID_Detail" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Service">
-            <EntityTypeMapping TypeName="nico_carServiceModel.Service">
-              <MappingFragment StoreEntitySet="Service">
-                <ScalarProperty Name="Service_ID" ColumnName="Service_ID" />
-                <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="Current_day" ColumnName="Current_day" />
-                <ScalarProperty Name="Count_clients" ColumnName="Count_clients" />
+          <EntitySetMapping Name="Purchase">
+            <EntityTypeMapping TypeName="nico_carsModel.Purchase">
+              <MappingFragment StoreEntitySet="Purchase">
+                <ScalarProperty Name="ID_Purchase" ColumnName="ID_Purchase" />
+                <ScalarProperty Name="ID_Detail" ColumnName="ID_Detail" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Total_price" ColumnName="Total_price" />
+                <ScalarProperty Name="Days_to_arrival" ColumnName="Days_to_arrival" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

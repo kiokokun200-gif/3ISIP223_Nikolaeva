@@ -4,15 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="49f020c8a07e491faf2c6283b2978074" Name="Diagram1">
-        <EntityTypeShape EntityType="nico_carServiceModel.Inventory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_carServiceModel.Part" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_carServiceModel.Part_Inventorry" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_carServiceModel.Purchase_Queue" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="nico_carServiceModel.Service" Width="1.5" PointX="5.75" PointY="1.875" IsExpanded="true" />
-        <AssociationConnector Association="nico_carServiceModel.FK_Part_Inventorry_Inventory" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_carServiceModel.FK_Part_Inventorry_Part" ManuallyRouted="false" />
-        <AssociationConnector Association="nico_carServiceModel.FK_Purchase_Queue_Part" ManuallyRouted="false" />
+      <Diagram DiagramId="a1bde4bdd3bb471c94502dd92516feca" Name="Diagram1">
+        <EntityTypeShape EntityType="nico_carsModel.Client" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_carsModel.Detail" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_carsModel.Order" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="nico_carsModel.Purchase" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <AssociationConnector Association="nico_carsModel.FK_Order_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_carsModel.FK_Order_Detail" ManuallyRouted="false" />
+        <AssociationConnector Association="nico_carsModel.FK_Purchase_Detail" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

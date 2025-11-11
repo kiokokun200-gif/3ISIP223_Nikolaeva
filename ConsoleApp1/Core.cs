@@ -8,6 +8,6 @@ namespace ConsoleApp1
 {
     internal class Core
     {
-        public static nico_carServiceEntities Context = new nico_carServiceEntities();
+        public static nico_carsEntities Context = new nico_carsEntities();
     }
 }

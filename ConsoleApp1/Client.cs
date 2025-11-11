@@ -12,23 +12,18 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Part
+    public partial class Client
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Part()
+        public Client()
         {
-            this.Part_Inventorry = new HashSet<Part_Inventorry>();
-            this.Purchase_Queue = new HashSet<Purchase_Queue>();
+            this.Order = new HashSet<Order>();
         }
     
-        public int Part_ID { get; set; }
+        public int ID_Client { get; set; }
         public string Name { get; set; }
-        public int Puchase_price { get; set; }
-        public int Sell_price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Part_Inventorry> Part_Inventorry { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Purchase_Queue> Purchase_Queue { get; set; }
+        public virtual ICollection<Order> Order { get; set; }
     }
 }

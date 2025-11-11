@@ -2,419 +2,344 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace AutoServiceGame
+namespace пр7
 {
-    class Program
+    public class Game
     {
-        static void Main(string[] args)
+        public List<Client> clients { get; private set; }
+        public List<Detail> details { get; private set; }
+        public Random rand { get; private set; }
+        public double balance { get; set; }
+        public double refuseClient { get; set; }
+        public double Fine { get; set; }
+
+        public void Initialize()
         {
-            Console.OutputEncoding = Encoding.UTF8;
-            Console.WriteLine("=== АВТОСЕРВИС 'ПРОФЕССИОНАЛ' ===");
-
-            try
-            {
-                GameManager.StartGame();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Критическая ошибка: {ex.Message}");
-                Console.ReadLine();
-            }
-        }
-    }
-
-    public static class GameManager
-    {
-        private static Service service;
-        private static List<Part> parts;
-        private static Random random = new Random();
-
-        public static void StartGame()
-        {
-            LoadGameData();
-            MainGameLoop();
+            clients = Core.Context.Client.ToList();
+            details = Core.Context.Detail.ToList();
+            rand = new Random();
+            balance = 1000;
+            refuseClient = 50;
+            Fine = 100;
         }
 
-        private static void LoadGameData()
+        public void ShowDetails()
         {
-            using (var context = Core.Context)
+            Console.Clear();
+            Console.WriteLine("ДЕТАЛИ НА СКЛАДЕ");
+            Console.WriteLine("=================");
+            foreach (var detail in details)
             {
-                service = context.Service.First();
-                parts = context.Part.ToList();
-
-                Console.WriteLine("Данные успешно загружены!");
-                Console.WriteLine($"Баланс: {service.Balance } Р");
-                Console.WriteLine("Нажмите любую клавишу для продолжения...");
-                Console.ReadKey();
+                Console.WriteLine($"{detail.Name}");
+                Console.WriteLine($"Количество: {detail.Quantity} шт.");
+                Console.WriteLine("-----------------");
             }
+            Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+            Console.ReadKey();
         }
 
-        private static void MainGameLoop()
+        public void ServeClient()
         {
-            while (true)
+            Console.Clear();
+            Client currentClient = clients[rand.Next(clients.Count)];
+            Detail brokenDetail = details[rand.Next(details.Count)];
+
+            bool clientServed = false;
+            while (!clientServed)
             {
                 Console.Clear();
-                ShowMainMenu();
+                Console.WriteLine("ОБСЛУЖИВАНИЕ КЛИЕНТА");
+                Console.WriteLine("====================");
+                Console.WriteLine($"Клиент: {currentClient.Name}");
+                Console.WriteLine($"Сломалась: {brokenDetail.Name}");
+                Console.WriteLine($"Стоимость ремонта: {brokenDetail.SellPrice} руб.");
+                Console.WriteLine("-----------------");
+                Console.WriteLine("1. Обслужить клиента");
+                Console.WriteLine("2. Проверить наличие детали на складе");
+                Console.WriteLine("3. Отказать клиенту");
+                Console.WriteLine("4. Вернуться в главное меню");
+                Console.Write("Выберите действие: ");
 
-                var choice = ReadPositiveInt("Выберите действие: ");
+                int choice = int.Parse(Console.ReadLine());
 
                 switch (choice)
                 {
                     case 1:
-                        ServeNextCustomer();
+                        Repair(brokenDetail, currentClient);
+                        clientServed = true;
                         break;
                     case 2:
-                        ShowPurchaseMenu();
+                        if (!CheckDetail(brokenDetail))
+                        {
+                            Console.WriteLine("\n-----------------");
+                            Console.WriteLine("1. Заказать деталь");
+                            Console.WriteLine("2. Отказать клиенту");
+                            Console.WriteLine("3. Продолжить обслуживание этого клиента");
+                            Console.Write("Выберите действие: ");
+                            int choice2 = int.Parse(Console.ReadLine());
+                            switch (choice2)
+                            {
+                                case 1:
+                                    PurchaseDetail(brokenDetail);
+                                    break;
+                                case 2:
+                                    RefuseClient(currentClient);
+                                    clientServed = true;
+                                    break;
+                                case 3:
+                                    // Остаемся с тем же клиентом
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                            Console.ReadKey();
+                        }
                         break;
                     case 3:
-                        ShowInventory();
+                        RefuseClient(currentClient);
+                        clientServed = true;
                         break;
                     case 4:
-                        Console.WriteLine("Выход из игры...");
-                        return;
-                    default:
-                        Console.WriteLine("Неверный выбор!");
-                        Console.ReadKey();
+                        clientServed = true;
                         break;
                 }
             }
+
+            UpdatePurchases();
         }
 
-        private static void ShowMainMenu()
+        public void RefuseClient(Client client)
         {
-            Console.WriteLine($"\n=== АВТОСЕРВИС ===");
-            Console.WriteLine($"День: {service.Current_day} | Баланс: {service.Balance:C0}");
-            Console.WriteLine("1. Обслужить следующего клиента");
-            Console.WriteLine("2. Закупить запчасти");
-            Console.WriteLine("3. Показать склад");
-            Console.WriteLine("4. Выйти из игры");
-        }
+            Console.WriteLine($"Отказ в обслуживании клиента {client.Name}. Штраф: {refuseClient} руб.");
+            balance -= refuseClient;
 
-        private static void ServeNextCustomer()
-        {
-            Console.WriteLine("\n=== НОВЫЙ КЛИЕНТ ===");
-
-            using (var context = new nico_carServiceEntities())
-            {
-                var brokenPart = parts[random.Next(parts.Count)];
-                int repairCost = brokenPart.Sell_price;
-
-                Console.WriteLine($"У клиента сломался: {brokenPart.Name}");
-                Console.WriteLine($"Стоимость ремонта: {repairCost:C0}");
-                Console.WriteLine($"На складе есть: {GetPartQuantity(brokenPart.Part_ID)} шт.");
-
-                Console.WriteLine("\n1. Принять заказ");
-                Console.WriteLine("2. Отказать");
-
-                var choice = ReadPositiveInt("Ваш выбор: ");
-
-                if (choice == 1)
-                {
-                    AcceptOrder(context, brokenPart, repairCost);
-                }
-                else if (choice == 2)
-                {
-                    RefuseOrder(context);
-                }
-                else
-                {
-                    Console.WriteLine("Неверный выбор!");
-                }
-
-                context.SaveChanges();
-                UpdateGameDay();
-
-                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
-                Console.ReadKey();
-            }
-        }
-
-        private static int GetPartQuantity(int partId)
-        {
-            using (var context = new nico_carServiceEntities())
-            {
-                return context.Part_Inventorry
-                    .Where(pi => pi.Part_ID == partId && pi.Quantity > 0)
-                    .Sum(pi => pi.Quantity);
-            }
-        }
-
-        private static void AcceptOrder(nico_carServiceEntities context, Part brokenPart, int repairCost)
-        {
-            int availableQuantity = GetPartQuantity(brokenPart.Part_ID);
-
-            if (availableQuantity > 0)
-            {
-                UsePartFromInventory(brokenPart.Part_ID);
-                service.Balance += repairCost;
-                service.Count_clients++;
-
-                Console.WriteLine($"Ремонт выполнен успешно! Клиент заплатил {repairCost:C0}");
-            }
-            else
-            {
-                Console.WriteLine("Нужной детали нет на складе! Производим замену другой деталью...");
-                PerformWrongReplacement(context, brokenPart, repairCost);
-            }
-        }
-
-        private static void UsePartFromInventory(int partId)
-        {
-            using (var context = new nico_carServiceEntities())
-            {
-                var partInventory = context.Part_Inventorry
-                    .FirstOrDefault(pi => pi.Part_ID == partId && pi.Quantity > 0);
-
-                if (partInventory != null)
-                {
-                    partInventory.Quantity--;
-                    if (partInventory.Quantity == 0)
-                    {
-                        context.Part_Inventorry.Remove(partInventory);
-                    }
-                    context.SaveChanges();
-                }
-            }
-        }
-
-        private static void PerformWrongReplacement(nico_carServiceEntities context, Part brokenPart, int repairCost)
-        {
-            var availablePart = context.Part_Inventorry
-                .Where(pi => pi.Quantity > 0 && pi.Part_ID != brokenPart.Part_ID)
-                .Select(pi => pi.Part)
-                .FirstOrDefault();
-
-            if (availablePart != null)
-            {
-                UsePartFromInventory(availablePart.Part_ID);
-
-                int penalty = repairCost * 2;
-                service.Balance -= penalty;
-
-                Console.WriteLine($"Клиент возмущен! Вы поставили {availablePart.Name} вместо {brokenPart.Name}");
-                Console.WriteLine($"Выплачен штраф: {penalty:C0}");
-            }
-            else
-            {
-                Console.WriteLine("На складе нет вообще никаких деталей! Штраф увеличен.");
-                int penalty = repairCost * 3;
-                service.Balance -= penalty;
-                Console.WriteLine($"Выплачен штраф: {penalty:C0}");
-            }
-        }
-
-        private static void RefuseOrder(nico_carServiceEntities context)
-        {
-            int fine = 50;
-            service.Balance -= fine;
-            Console.WriteLine($"Вы отказали клиенту. Штраф: {fine:C0}");
-        }
-
-        private static void UpdateGameDay()
-        {
-            service.Current_day++;
-
-            using (var context = new nico_carServiceEntities())
-            {
-                var currentService = context.Service.First();
-                currentService.Current_day = service.Current_day;
-                currentService.Balance = service.Balance;
-                currentService.Count_clients = service.Count_clients;
-
-                var arrivingOrders = context.Purchase_Queue
-                    .Where(pq => pq.Days_to_arrive <= 0)
-                    .ToList();
-
-                foreach (var order in arrivingOrders)
-                {
-                    AddPartToInventory(order.Part_ID, order.Quantity);
-                    context.Purchase_Queue.Remove(order);
-                    Console.WriteLine($"Поставка прибыла: {order.Quantity} шт. {GetPartName(order.Part_ID)}");
-                }
-
-                var otherOrders = context.Purchase_Queue.ToList();
-                foreach (var order in otherOrders)
-                {
-                    order.Days_to_arrive--;
-                }
-
-                context.SaveChanges();
-            }
-        }
-
-        private static void AddPartToInventory(int partId, int quantity)
-        {
-            using (var context = new nico_carServiceEntities())
-            {
-                var existingInventory = context.Part_Inventorry
-                    .FirstOrDefault(pi => pi.Part_ID == partId);
-
-                if (existingInventory != null)
-                {
-                    existingInventory.Quantity += quantity;
-                }
-                else
-                {
-                    var newInventory = new Inventory
-                    {
-                        PurchaseDate = DateTime.Now,
-                        Cost = 0
-                    };
-                    context.Inventory.Add(newInventory);
-                    context.SaveChanges();
-
-                    var partInventory = new Part_Inventorry
-                    {
-                        Part_ID = partId,
-                        Inventory_ID = newInventory.Inventory_ID,
-                        Quantity = quantity
-                    };
-                    context.Part_Inventorry.Add(partInventory);
-                }
-
-                context.SaveChanges();
-            }
-        }
-
-        private static string GetPartName(int partId)
-        {
-            using (var context = new nico_carServiceEntities())
-            {
-                return context.Part.First(p => p.Part_ID == partId).Name;
-            }
-        }
-
-        private static void ShowPurchaseMenu()
-        {
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("=== ЗАКУПКА ЗАПЧАСТЕЙ ===");
-                Console.WriteLine($"Баланс: {service.Balance:C0}\n");
-
-                using (var context = new nico_carServiceEntities())
-                {
-                    for (int i = 0; i < parts.Count; i++)
-                    {
-                        var part = parts[i];
-                        int inStock = GetPartQuantity(part.Part_ID);
-                        Console.WriteLine($"{i + 1}. {part.Name} | Цена: {part.Puchase_price:C0} | На складе: {inStock} шт.");
-                    }
-
-                    Console.WriteLine($"\n{parts.Count + 1}. Назад");
-
-                    var choice = ReadPositiveInt("\nВыберите деталь для закупки: ");
-
-                    if (choice == parts.Count + 1)
-                        break;
-
-                    if (choice > 0 && choice <= parts.Count)
-                    {
-                        var selectedPart = parts[choice - 1];
-                        PurchasePart(context, selectedPart);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Неверный выбор!");
-                        Console.ReadKey();
-                    }
-                }
-            }
-        }
-
-        private static void PurchasePart(nico_carServiceEntities context, Part part)
-        {
-            Console.WriteLine($"\nЗакупка: {part.Name}");
-            Console.WriteLine($"Цена за штуку: {part.Puchase_price:C0}");
-            Console.WriteLine($"Ваш баланс: {service.Balance:C0}");
-
-            int quantity = ReadPositiveInt("Сколько штук закупить? ");
-            int totalCost = part.Puchase_price * quantity;
-
-            if (totalCost > service.Balance)
-            {
-                Console.WriteLine("Недостаточно денег для закупки!");
-                Console.ReadKey();
-                return;
-            }
-
-            service.Balance -= totalCost;
-
-            var purchaseOrder = new Purchase_Queue
-            {
-                Part_ID = part.Part_ID,
-                Quantity = quantity,
-                Days_to_arrive = 2
-            };
-            context.Purchase_Queue.Add(purchaseOrder);
-
-            // Обновляем баланс в базе данных
-            var currentService = context.Service.First();
-            currentService.Balance = service.Balance;
-
-            context.SaveChanges();
-
-            Console.WriteLine($"Заказ оформлен! Поставка прибудет через 2 клиента. Списано: {totalCost:C0}");
+            Console.WriteLine("\nНажмите любую клавишу для продолжения...");
             Console.ReadKey();
         }
 
-        private static void ShowInventory()
+        public bool CheckDetail(Detail detail)
+        {
+            if (detail.Quantity > 0)
+            {
+                Console.WriteLine($"\nДеталь '{detail.Name}' доступна в количестве {detail.Quantity} шт.");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"\nДеталь '{detail.Name}' недоступна на складе!");
+                return false;
+            }
+        }
+
+        public void PurchaseDetail(Detail detail)
         {
             Console.Clear();
-            Console.WriteLine("=== СКЛАД ===");
+            Console.WriteLine("ЗАКУПКА ДЕТАЛЕЙ");
+            Console.WriteLine("================");
+            Console.WriteLine($"Деталь: {detail.Name}");
+            Console.WriteLine($"Цена за штуку: {detail.PurchasePrice} руб.");
+            Console.Write("Укажите количество деталей: ");
+            int quantity = int.Parse(Console.ReadLine());
 
-            using (var context = new nico_carServiceEntities())
+            double total_coast = detail.PurchasePrice * quantity;
+            balance -= total_coast;
+            int newPurchaseId = Core.Context.Purchase.Any() ? Core.Context.Purchase.Max(p => p.ID_Purchase) + 1 : 1;
+            Purchase purchase = new Purchase
             {
-                var inventory = context.Part_Inventorry
-                    .Where(pi => pi.Quantity > 0)
-                    .GroupBy(pi => pi.Part)
-                    .Select(g => new { Part = g.Key, Total = g.Sum(pi => pi.Quantity) })
-                    .ToList();
+                ID_Purchase = newPurchaseId,
+                ID_Detail = detail.ID_Detail,
+                Quantity = quantity,
+                Total_price = total_coast,
+                Days_to_arrival = 2
+            };
+            Core.Context.Purchase.Add(purchase);
+            Core.Context.SaveChanges();
 
-                if (!inventory.Any())
-                {
-                    Console.WriteLine("Склад пуст!");
-                }
-                else
-                {
-                    foreach (var item in inventory)
-                    {
-                        Console.WriteLine($"  {item.Part.Name}: {item.Total} шт.");
-                    }
-                }
+            Console.WriteLine($"\nЗаказ оформлен! Доставка через 2 клиента.");
+            Console.WriteLine($"Списано: {total_coast} руб.");
+            Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+            Console.ReadKey();
+        }
 
-                var pendingOrders = context.Purchase_Queue.ToList();
-                if (pendingOrders.Any())
+        public void PurchaseDetail()
+        {
+            Console.Clear();
+            Console.WriteLine("ЗАКУПКА ДЕТАЛЕЙ");
+            Console.WriteLine("================");
+            Console.WriteLine("Список доступных деталей:");
+            foreach (var detail in details)
+            {
+                Console.WriteLine($"ID: {detail.ID_Detail} - {detail.Name}");
+                Console.WriteLine($"Цена: {detail.PurchasePrice} руб.");
+                Console.WriteLine("-----------------");
+            }
+
+            Console.Write("Введите ID детали для покупки: ");
+            int ID = int.Parse(Console.ReadLine());
+            var detailToBuy = details.FirstOrDefault(d => d.ID_Detail == ID);
+
+            if (detailToBuy != null)
+            {
+                Console.WriteLine($"\nДеталь: {detailToBuy.Name}");
+                Console.WriteLine($"Цена за штуку: {detailToBuy.PurchasePrice} руб.");
+                Console.Write("Укажите количество деталей: ");
+                int quantity = int.Parse(Console.ReadLine());
+
+                double total_coast = detailToBuy.PurchasePrice * quantity;
+                balance -= total_coast;
+                int newPurchaseId = Core.Context.Purchase.Any() ? Core.Context.Purchase.Max(p => p.ID_Purchase) + 1 : 1;
+                Purchase purchase = new Purchase
                 {
-                    Console.WriteLine("\nОжидаются поставки:");
-                    foreach (var order in pendingOrders)
-                    {
-                        var part = context.Part.First(p => p.Part_ID == order.Part_ID);
-                        Console.WriteLine($"  {part.Name}: {order.Quantity} шт. (через {order.Days_to_arrive} клиента(ов))");
-                    }
-                }
+                    ID_Purchase = newPurchaseId,
+                    ID_Detail = detailToBuy.ID_Detail,
+                    Quantity = quantity,
+                    Total_price = total_coast,
+                    Days_to_arrival = 2
+                };
+                Core.Context.Purchase.Add(purchase);
+                Core.Context.SaveChanges();
+
+                Console.WriteLine($"\nЗаказ оформлен! Доставка через 2 клиента.");
+                Console.WriteLine($"Списано: {total_coast} руб.");
+            }
+            else
+            {
+                Console.WriteLine("Деталь с таким ID не найдена!");
             }
 
             Console.WriteLine("\nНажмите любую клавишу для продолжения...");
             Console.ReadKey();
         }
 
-        public static int ReadPositiveInt(string message)
+        public void Repair(Detail brokendetail, Client client)
         {
-            while (true)
+            Console.Clear();
+            Console.WriteLine("РЕМОНТ ДЕТАЛИ");
+            Console.WriteLine("==============");
+
+            var repairdetail = details.FirstOrDefault(d => d.ID_Detail == brokendetail.ID_Detail);
+            bool correctdetail;
+
+            if (repairdetail != null && repairdetail.Quantity > 0)
             {
-                Console.Write(message);
-                if (int.TryParse(Console.ReadLine(), out int result) && result > 0)
-                    return result;
-                Console.WriteLine("Ошибка! Введите положительное число.");
+                Console.WriteLine("Ремонт успешно прошел!");
+                balance += brokendetail.SellPrice;
+                repairdetail.Quantity--;
+                correctdetail = true;
+                Console.WriteLine($"Получено: {brokendetail.SellPrice} руб.");
+            }
+            else
+            {
+                var availableDetails = details.Where(d => d.Quantity > 0).ToList();
+                if (availableDetails.Count > 0)
+                {
+                    repairdetail = availableDetails[rand.Next(availableDetails.Count)];
+                    Console.WriteLine("Ремонт выполнен с неверной деталью!");
+                    Console.WriteLine($"Использована: {repairdetail.Name}");
+                    Console.WriteLine($"Штраф: {Fine} руб.");
+                    balance -= Fine;
+                    repairdetail.Quantity--;
+                    correctdetail = false;
+                }
+                else
+                {
+                    Console.WriteLine("На складе нет деталей! Штраф за отказ.");
+                    balance -= Fine;
+                    Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                    Console.ReadKey();
+                    return;
+                }
+            }
+
+            int newOrderId = Core.Context.Order.Any() ? Core.Context.Order.Max(o => o.ID_Order) + 1 : 1;
+
+            Order order = new Order
+            {
+                ID_Order = newOrderId,
+                ID_Client = client.ID_Client,
+                ID_Detail = repairdetail.ID_Detail,
+                Price = correctdetail ? repairdetail.SellPrice : -Fine,
+            };
+
+            Core.Context.Order.Add(order);
+            Core.Context.SaveChanges();
+
+            Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+            Console.ReadKey();
+        }
+         
+        public void UpdatePurchases()
+        {
+            var purchases = Core.Context.Purchase.ToList();
+            bool deliveryArrived = false;
+
+            foreach (var purchase in purchases)
+            {
+                if (purchase.Days_to_arrival > 0)
+                {
+                    purchase.Days_to_arrival--;
+                    if (purchase.Days_to_arrival == 0)
+                    {
+                        var detail = details.FirstOrDefault(d => d.ID_Detail == purchase.ID_Detail);
+                        if (detail != null)
+                        {
+                            detail.Quantity += purchase.Quantity;
+                            Console.WriteLine($"\nДоставка прибыла: {detail.Name} в количестве {purchase.Quantity} шт.");
+                            deliveryArrived = true;
+                        }
+                    }
+                }
+            }
+
+            Core.Context.SaveChanges();
+
+            if (deliveryArrived)
+            {
+                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                Console.ReadKey();
             }
         }
     }
 
-    public static class Core
+    internal class Program
     {
-        public static nico_carServiceEntities Context { get; } = new nico_carServiceEntities();
+        static void Main(string[] args)
+        {
+            Game game = new Game();
+            game.Initialize();
+
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("МАШИННЫЙ САЛОН");
+                Console.WriteLine("==============");
+                Console.WriteLine($"Баланс: {game.balance} руб.");
+                Console.WriteLine("-----------------");
+                Console.WriteLine("1. Детали на складе");
+                Console.WriteLine("2. Обслужить клиента");
+                Console.WriteLine("3. Заказать поставку");
+                Console.WriteLine("0. Выход");
+                Console.WriteLine("-----------------");
+                Console.Write("Выберите действие: ");
+
+                int choice = int.Parse(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 0: return;
+                    case 1: game.ShowDetails(); break;
+                    case 2:
+                        game.ServeClient();
+                        break;
+                    case 3:
+                        game.PurchaseDetail();
+                        break;
+
+                }
+            }
+        }
     }
 }

@@ -12,19 +12,24 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Inventory
+    public partial class Detail
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Inventory()
+        public Detail()
         {
-            this.Part_Inventorry = new HashSet<Part_Inventorry>();
+            this.Order = new HashSet<Order>();
+            this.Purchase = new HashSet<Purchase>();
         }
     
-        public int Inventory_ID { get; set; }
-        public System.DateTime PurchaseDate { get; set; }
-        public int Cost { get; set; }
+        public int ID_Detail { get; set; }
+        public string Name { get; set; }
+        public double PurchasePrice { get; set; }
+        public double SellPrice { get; set; }
+        public int Quantity { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Part_Inventorry> Part_Inventorry { get; set; }
+        public virtual ICollection<Order> Order { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Purchase> Purchase { get; set; }
     }
 }
