@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleApp2
@@ -314,6 +315,7 @@ namespace ConsoleApp2
         }
 
         // Просмотр корзины с выводом ID
+        // Просмотр корзины с выводом ID
         static void ViewCart(Users user)
         {
             Console.Clear();
@@ -338,39 +340,219 @@ namespace ConsoleApp2
             }
 
             decimal totalAmount = 0;
-
+            int itemNumber = 1;
 
             foreach (var item in cartItems)
             {
                 var itemTotal = item.Quantity * item.Products.Price;
                 totalAmount += itemTotal;
 
-                Console.WriteLine($"   Товар: {item.Products.Name}");
+                Console.WriteLine($"{itemNumber}. Товар: {item.Products.Name}");
                 Console.WriteLine($"   Цена: {item.Products.Price} руб.");
                 Console.WriteLine($"   Количество: {item.Quantity}");
                 Console.WriteLine($"   Сумма: {itemTotal} руб.");
                 Console.WriteLine($"   ID: {item.CartItemID}");
                 Console.WriteLine("-----------------------------------");
-
+                itemNumber++;
             }
 
             Console.WriteLine($"ОБЩАЯ СУММА: {totalAmount} руб.");
-            Console.WriteLine("\n1. Оформить заказ");
-            Console.WriteLine("2. Удалить товар из корзины");
-            Console.WriteLine("3. Вернуться в меню");
+            Console.WriteLine("\n1. Купить все товары из корзины");
+            Console.WriteLine("2. Купить один товар");
+            Console.WriteLine("3. Удалить товар из корзины");
+            Console.WriteLine("4. Вернуться в меню");
             Console.Write("Выберите действие: ");
 
             var choice = Console.ReadLine();
-            if (choice == "1")
+            switch (choice)
             {
-                CreateOrder(user, cart, cartItems);
-            }
-            else if (choice == "2")
-            {
-                RemoveFromCart(user);
+                case "1":
+                    CreateOrder(user, cart, cartItems); // Покупка всей корзины
+                    break;
+                case "2":
+                    BuySingleItem(user, cart, cartItems); // Покупка одного товара
+                    break;
+                case "3":
+                    RemoveFromCart(user);
+                    break;
+                case "4":
+                    // Просто возвращаемся в меню
+                    break;
+                default:
+                    Console.WriteLine("Неверный выбор!");
+                    Console.ReadKey();
+                    break;
             }
         }
 
+        // Покупка одного товара из корзины
+        static void BuySingleItem(Users user, Carts cart, List<CartItems> cartItems)
+        {
+            if (!cartItems.Any())
+            {
+                Console.WriteLine("Корзина пуста!");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.Write("Введите номер товара для покупки: ");
+            if (!int.TryParse(Console.ReadLine(), out int itemNumber) || itemNumber < 1 || itemNumber > cartItems.Count)
+            {
+                Console.WriteLine("Неверный номер товара!");
+                Console.ReadKey();
+                return;
+            }
+
+            var selectedCartItem = cartItems[itemNumber - 1];
+
+            Console.Clear();
+            Console.WriteLine("=== ПОКУПКА ОДНОГО ТОВАРА ===");
+            Console.WriteLine($"Товар: {selectedCartItem.Products.Name}");
+            Console.WriteLine($"Количество: {selectedCartItem.Quantity}");
+            Console.WriteLine($"Сумма: {selectedCartItem.Quantity * selectedCartItem.Products.Price} руб.");
+
+            // Показываем доступные пункты выдачи
+            var pickupPoints = Core.Context.PickupPoints.ToList();
+            Console.WriteLine("\nДоступные пункты выдачи:");
+            foreach (var point in pickupPoints)
+            {
+                Console.WriteLine($"ID: {point.PickupPointID} - {point.Description} ({point.Address})");
+            }
+
+            Console.Write("Выберите ID пункта выдачи: ");
+            if (!int.TryParse(Console.ReadLine(), out int pickupPointId))
+            {
+                Console.WriteLine("Неверный ID пункта выдачи!");
+                Console.ReadKey();
+                return;
+            }
+
+            var selectedPoint = Core.Context.PickupPoints.FirstOrDefault(p => p.PickupPointID == pickupPointId);
+            if (selectedPoint == null)
+            {
+                Console.WriteLine("Пункт выдачи не найден!");
+                Console.ReadKey();
+                return;
+            }
+
+            try
+            {
+                // Создаем заказ для одного товара
+                var order = new Orders
+                {
+                    UserID = user.UserID,
+                    PickupPointID = pickupPointId,
+                    OrderDate = DateTime.Now,
+                    TotalAmount = selectedCartItem.Quantity * selectedCartItem.Products.Price
+                };
+                Core.Context.Orders.Add(order);
+                Core.Context.SaveChanges();
+
+                // Создаем элемент заказа
+                var orderItem = new OrderItems
+                {
+                    OrderID = order.OrderID,
+                    ProductID = selectedCartItem.ProductID,
+                    Quantity = selectedCartItem.Quantity,
+                    UnitPrice = selectedCartItem.Products.Price
+                };
+                Core.Context.OrderItems.Add(orderItem);
+
+                // Уменьшаем количество товара на складе
+                selectedCartItem.Products.StockQuantity -= selectedCartItem.Quantity;
+
+
+                Console.WriteLine($"Товар '{selectedCartItem.Products.Name}' успешно куплен!");
+                Console.WriteLine($"Сумма: {order.TotalAmount} руб.");
+                Console.WriteLine($"Пункт выдачи: {selectedPoint.Description}");
+                // Удаляем только этот товар из корзины
+                Core.Context.CartItems.Remove(selectedCartItem);
+                Core.Context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при покупке товара: {ex.Message}");
+            }
+
+            Console.ReadKey();
+        }
+
+        static void CreateOrder(Users user, Carts cart, System.Collections.Generic.List<CartItems> cartItems)
+        {
+            Console.Clear();
+            Console.WriteLine("=== ПОКУПКА ВСЕЙ КОРЗИНЫ ===");
+
+            decimal totalAmount = cartItems.Sum(item => item.Quantity * item.Products.Price);
+            Console.WriteLine("Состав заказа:");
+            foreach (var item in cartItems)
+            {
+                Console.WriteLine($"- {item.Products.Name} x {item.Quantity} = {item.Quantity * item.Products.Price} руб.");
+            }
+            Console.WriteLine($"ОБЩАЯ СУММА: {totalAmount} руб.");
+
+            var pickupPoints = Core.Context.PickupPoints.ToList();
+            Console.WriteLine("\nДоступные пункты выдачи:");
+            foreach (var point in pickupPoints)
+            {
+                Console.WriteLine($"ID: {point.PickupPointID} - {point.Description} ({point.Address})");
+            }
+
+            Console.Write("Выберите ID пункта выдачи: ");
+            if (!int.TryParse(Console.ReadLine(), out int pickupPointId))
+            {
+                Console.WriteLine("Неверный ID пункта выдачи!");
+                Console.ReadKey();
+                return;
+            }
+
+            var selectedPoint = Core.Context.PickupPoints.FirstOrDefault(p => p.PickupPointID == pickupPointId);
+            if (selectedPoint == null)
+            {
+                Console.WriteLine("Пункт выдачи не найден!");
+                Console.ReadKey();
+                return;
+            }
+
+            try
+            {
+                var order = new Orders
+                {
+                    UserID = user.UserID,
+                    PickupPointID = pickupPointId,
+                    OrderDate = DateTime.Now,
+                    TotalAmount = totalAmount
+                };
+                Core.Context.Orders.Add(order);
+                Core.Context.SaveChanges();
+
+                foreach (var cartItem in cartItems)
+                {
+                    var orderItem = new OrderItems
+                    {
+                        OrderID = order.OrderID,
+                        ProductID = cartItem.ProductID,
+                        Quantity = cartItem.Quantity,
+                        UnitPrice = cartItem.Products.Price
+                    };
+                    Core.Context.OrderItems.Add(orderItem);
+
+                    cartItem.Products.StockQuantity -= cartItem.Quantity;
+                }
+
+                Core.Context.CartItems.RemoveRange(cartItems);
+                Core.Context.SaveChanges();
+
+                Console.WriteLine($"Заказ успешно оформлен!");
+                Console.WriteLine($"Общая сумма: {totalAmount} руб.");
+                Console.WriteLine($"Пункт выдачи: {selectedPoint.Description}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при оформлении заказа: {ex.Message}");
+            }
+
+            Console.ReadKey();
+        }
         // Удаление товара из корзины по CartItemID
         static void RemoveFromCart(Users user)
         {
@@ -416,78 +598,7 @@ namespace ConsoleApp2
             Console.ReadKey();
         }
         // Создание заказа
-        static void CreateOrder(Users user, Carts cart, System.Collections.Generic.List<CartItems> cartItems)
-        {
-            Console.Clear();
-            Console.WriteLine("=== ОФОРМЛЕНИЕ ЗАКАЗА ===");
-
-            // Показываем доступные пункты выдачи
-            var pickupPoints = Core.Context.PickupPoints.ToList();
-
-            Console.WriteLine("Доступные пункты выдачи:");
-            foreach (var point in pickupPoints)
-            {
-                Console.WriteLine($"ID: {point.PickupPointID} - {point.Description} ({point.Address})");
-            }
-
-            Console.Write("Выберите ID пункта выдачи: ");
-            if (!int.TryParse(Console.ReadLine(), out int pickupPointId))
-            {
-                Console.WriteLine("Неверный ID пункта выдачи!");
-                Console.ReadKey();
-                return;
-            }
-
-            var selectedPoint = Core.Context.PickupPoints.FirstOrDefault(p => p.PickupPointID == pickupPointId);
-            if (selectedPoint == null)
-            {
-                Console.WriteLine("Пункт выдачи не найден!");
-                Console.ReadKey();
-                return;
-            }
-
-            try
-            {
-                decimal totalAmount = cartItems.Sum(item => item.Quantity * item.Products.Price);
-
-                var order = new Orders
-                {
-                    UserID = user.UserID,
-                    PickupPointID = pickupPointId,
-                    OrderDate = DateTime.Now,
-                    TotalAmount = totalAmount
-                };
-                Core.Context.Orders.Add(order);
-                Core.Context.SaveChanges();
-
-                foreach (var cartItem in cartItems)
-                {
-                    var orderItem = new OrderItems
-                    {
-                        OrderID = order.OrderID,
-                        ProductID = cartItem.ProductID,
-                        Quantity = cartItem.Quantity,
-                        UnitPrice = cartItem.Products.Price
-                    };
-                    Core.Context.OrderItems.Add(orderItem);
-
-                    cartItem.Products.StockQuantity -= cartItem.Quantity;
-                }
-
-                Core.Context.CartItems.RemoveRange(cartItems);
-                Core.Context.SaveChanges();
-
-                Console.WriteLine($"Заказ #{order.OrderID} успешно оформлен!");
-                Console.WriteLine($"Общая сумма: {totalAmount} руб.");
-                Console.WriteLine($"Пункт выдачи: {selectedPoint.Description}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при оформлении заказа: {ex.Message}");
-            }
-
-            Console.ReadKey();
-        }
+        
 
         // Просмотр заказов
         static void ViewOrders(Users user)
@@ -509,8 +620,7 @@ namespace ConsoleApp2
 
             foreach (var order in orders)
             {
-                Console.WriteLine($"Заказ #{order.OrderID}");
-                Console.WriteLine($"Дата: {order.OrderDate:dd.MM.yyyy HH:mm}");
+                Console.WriteLine($"Заказ от {order.OrderDate:dd.MM.yyyy HH:mm}");
                 Console.WriteLine($"Сумма: {order.TotalAmount} руб.");
                 Console.WriteLine($"Пункт выдачи: {order.PickupPoints.Description}");
 
