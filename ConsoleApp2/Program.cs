@@ -7,8 +7,6 @@ namespace ConsoleApp2
     { 
         static void Main(string[] args)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
             while (true)
             {
                 Console.Clear();
@@ -41,7 +39,6 @@ namespace ConsoleApp2
             }
         }
 
-        // Просмотр товаров (доступно без регистрации)
         static void ViewProducts()
         {
             Console.Clear();
@@ -203,7 +200,6 @@ namespace ConsoleApp2
             }
         }
 
-        // Просмотр товаров для авторизованного пользователя (с возможностью добавления в корзину)
         static void ViewProductsForUser(Users user)
         {
             Console.Clear();
@@ -323,7 +319,6 @@ namespace ConsoleApp2
             Console.Clear();
             Console.WriteLine("=== МОЯ КОРЗИНА ===");
 
-            // Ищем корзину пользователя
             var cart = Core.Context.Carts.FirstOrDefault(c => c.UserID == user.UserID);
 
             if (cart == null)
@@ -333,7 +328,6 @@ namespace ConsoleApp2
                 return;
             }
 
-            // Получаем товары в корзине
             var cartItems = Core.Context.CartItems.Where(ci => ci.CartID == cart.CartID).ToList();
 
             if (!cartItems.Any())
@@ -454,10 +448,8 @@ namespace ConsoleApp2
 
             try
             {
-                // Рассчитываем общую сумму
                 decimal totalAmount = cartItems.Sum(item => item.Quantity * item.Products.Price);
 
-                // Создаем заказ
                 var order = new Orders
                 {
                     UserID = user.UserID,
@@ -468,7 +460,6 @@ namespace ConsoleApp2
                 Core.Context.Orders.Add(order);
                 Core.Context.SaveChanges();
 
-                // Создаем элементы заказа
                 foreach (var cartItem in cartItems)
                 {
                     var orderItem = new OrderItems
@@ -480,11 +471,9 @@ namespace ConsoleApp2
                     };
                     Core.Context.OrderItems.Add(orderItem);
 
-                    // Уменьшаем количество товара на складе
                     cartItem.Products.StockQuantity -= cartItem.Quantity;
                 }
 
-                // Очищаем корзину (удаляем все товары из корзины)
                 Core.Context.CartItems.RemoveRange(cartItems);
                 Core.Context.SaveChanges();
 
@@ -525,7 +514,6 @@ namespace ConsoleApp2
                 Console.WriteLine($"Сумма: {order.TotalAmount} руб.");
                 Console.WriteLine($"Пункт выдачи: {order.PickupPoints.Description}");
 
-                // Получаем товары из заказа
                 var orderItems = Core.Context.OrderItems.Where(oi => oi.OrderID == order.OrderID).ToList();
                 Console.WriteLine("Товары:");
                 foreach (var item in orderItems)
