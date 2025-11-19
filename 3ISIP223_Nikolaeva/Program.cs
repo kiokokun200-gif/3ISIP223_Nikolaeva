@@ -5,21 +5,10 @@ using _3ISIP223_Nikolaeva.Model;
 namespace _3ISIP223_Nikolaeva
 {
     // Перечисление типов врагов
-    public enum EnemyType
-    {
-        Goblin,
-        Skeleton,
-        Mage,
-        BossVvg,
-        BossKovalsky,
-        BossArchmage,
-        BossPestov
-    }
-
 
     public class Game
     {
-        private Random random = new Random();
+        private Raaandom random = new Raaandom();
 
         // Игрок
         public int PlayerHP { get; set; } = 100;

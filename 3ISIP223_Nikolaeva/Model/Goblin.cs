@@ -8,7 +8,7 @@ namespace _3ISIP223_Nikolaeva.Model
 {
     internal class Goblin : Enemy
     {
-        public Goblin() : base("Гоблин", 30, 8, 2, EnemyType.Goblin)
+        public Goblin() : base("Гоблин", rando  , 8, 2, EnemyType.Goblin)
         {
             CriticalChance = 0.2;
         }

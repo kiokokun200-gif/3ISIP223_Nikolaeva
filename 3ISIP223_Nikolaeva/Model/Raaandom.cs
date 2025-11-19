@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 
 namespace _3ISIP223_Nikolaeva.Model
 {
-    internal class Raaandom
+    internal static class Raaandom
     {
         Random random = new Random();
 
-        public int GetRand(int min, int max)
+        public int GetRandomInt(int min, int max)
         {
             return random.Next(min, max);
+        }
+
+        public double GetRandomDouble()
+        {
+            return random.NextDouble();
         }
     }
 }

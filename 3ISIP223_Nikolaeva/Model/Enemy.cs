@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 namespace _3ISIP223_Nikolaeva.Model
 {
     internal class Enemy
+
     {
+        public Raaandom random = new Raaandom();
         public string Name { get; set; }
         public int MaxHP { get; set; }
         public int CurrentHP { get; set; }
