@@ -63,5 +63,10 @@ namespace _3ISIP223_Nikolaeva.Model
         {
             return random.NextDouble() < FreezeChance;
         }
+
+        public virtual void TakeDamage(int damage)
+        {
+            CurrentHP -= damage;
+        }
     }
 }
