@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _3ISIP223_Nikolaeva.Model
 {
-    internal class FactoryCreate : Factory
+    internal class FactoryCreate
     {
         public List<Factory> mob;
         public List<Factory> boss;
@@ -16,11 +16,20 @@ namespace _3ISIP223_Nikolaeva.Model
             mob.Add(new MageFactory());
             mob.Add(new SkeletonFactory());
             mob.Add(new GoblinFactory());
+
+            boss = new List<Factory>();
+            boss.Add(new FactoryBossArchmage());
+            boss.Add(new FactoryBossKovalsky());
+            boss.Add(new FactoryBossPestov());
+            boss.Add(new FactoryBossVvg());
+
         }
 
-        //public override Enemy CreateEnemy()
-        //{
-        //    //return mob; //mob[n]
-        //}
+        public Factory CreateMob(int n)
+        {
+            return mob[n]; //mob[n]
+        }
+
+        public Factory CreateBoss(int n) { return boss[n]; }
     }
 }
