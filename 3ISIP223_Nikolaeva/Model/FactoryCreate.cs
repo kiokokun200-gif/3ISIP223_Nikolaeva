@@ -13,9 +13,9 @@ namespace _3ISIP223_Nikolaeva.Model
         public FactoryCreate() {
             mob = new List<Factory>();
             mob.Add(new FactorySlug());
-            mob.Add(new MageFactory());
-            mob.Add(new SkeletonFactory());
-            mob.Add(new GoblinFactory());
+            mob.Add(new FactoryMage());
+            mob.Add(new FactorySkeleton());
+            mob.Add(new FactoryGoblin());
 
             boss = new List<Factory>();
             boss.Add(new FactoryBossArchmage());
@@ -27,7 +27,7 @@ namespace _3ISIP223_Nikolaeva.Model
 
         public Factory CreateMob(int n)
         {
-            return mob[n]; //mob[n]
+            return mob[n]; 
         }
 
         public Factory CreateBoss(int n) { return boss[n]; }

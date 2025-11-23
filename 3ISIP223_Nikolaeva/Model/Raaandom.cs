@@ -12,7 +12,7 @@ namespace _3ISIP223_Nikolaeva.Model
 
         static public int GetRandomInt(int min, int max)
         {
-            return random.Next(min, max);
+            return random.Next(min, max + 1);
         }
 
         static public double GetRandomDouble()

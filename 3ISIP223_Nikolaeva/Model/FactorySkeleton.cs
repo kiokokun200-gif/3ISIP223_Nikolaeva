@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace _3ISIP223_Nikolaeva.Model
 {
-    internal class GoblinFactory : Factory
+    internal class FactorySkeleton : Factory
     {
         public override Enemy CreateEnemy()
-        {
-            return new Goblin();
-        }
+    {
+        return new Skeleton();
+    }
+    
     }
 }

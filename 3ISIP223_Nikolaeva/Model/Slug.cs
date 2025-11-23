@@ -8,7 +8,7 @@ namespace _3ISIP223_Nikolaeva.Model
 {
     internal class Slug : Enemy
     {
-        public Slug() : base("Слизень", 35, 5, 3, EnemyType.Slug)
+        public Slug() : base("Слизень", Raaandom.GetRandomInt(10, 15), Raaandom.GetRandomInt(2, 6), Raaandom.GetRandomInt(3, 7), EnemyType.Slug)
         {
 
         }
