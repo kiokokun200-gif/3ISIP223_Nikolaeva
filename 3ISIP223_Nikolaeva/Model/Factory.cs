@@ -9,7 +9,6 @@ namespace _3ISIP223_Nikolaeva.Model
     
     internal abstract class Factory
     {
-        public Raaandom random = new Raaandom();
         public abstract Enemy CreateEnemy();
     }
 }

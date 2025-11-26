@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _3ISIP223_Nikolaeva.Model
 {
-    internal public class Game
+    internal class Game
     {
         // Игрок
         public int PlayerHP { get; set; } = 100;

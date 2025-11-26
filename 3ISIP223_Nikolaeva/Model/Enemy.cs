@@ -9,7 +9,6 @@ namespace _3ISIP223_Nikolaeva.Model
     internal class Enemy
 
     {
-        public Raaandom random = new Raaandom();
         public string Name { get; set; }
         public int MaxHP { get; set; }
         public int CurrentHP { get; set; }
@@ -37,12 +36,12 @@ namespace _3ISIP223_Nikolaeva.Model
             Console.WriteLine($"{Name} - HP: {CurrentHP}/{MaxHP}, Атака: {Attack}, Защита: {Defense}");
         }
 
-        public virtual int CalculateDamage(Random random, int playerDefense)
+        public virtual int CalculateDamage(int playerDefense)
         {
             int damage = Attack;
 
             // Критический удар
-            if (random.NextDouble() < CriticalChance)
+            if (Raaandom.GetRandomDouble() < CriticalChance)
             {
                 damage *= 2;
                 Console.WriteLine("Критический удар!");
@@ -61,9 +60,9 @@ namespace _3ISIP223_Nikolaeva.Model
             return Math.Max(1, damage);
         }
 
-        public virtual bool TryFreeze(Random random)
+        public virtual bool TryFreeze()
         {
-            return random.NextDouble() < FreezeChance;
+            return Raaandom.GetRandomDouble() < FreezeChance;
         }
 
         public virtual void TakeDamage(int damage)
