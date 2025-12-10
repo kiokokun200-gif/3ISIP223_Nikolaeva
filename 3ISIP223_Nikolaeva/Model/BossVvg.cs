@@ -8,7 +8,7 @@ namespace _3ISIP223_Nikolaeva.Model
 {
     internal class BossVvg : Enemy
     {
-        public BossVvg() : base("ВВГ", 60, 12, 2, EnemyType.BossVvg)
+        public BossVvg() : base("ВВГ", Raaandom.GetRandomInt(12, 18), Raaandom.GetRandomInt(9, 12), Raaandom.GetRandomInt(1, 4), EnemyType.BossVvg)
         {
             CriticalChance = 0.3;
         }

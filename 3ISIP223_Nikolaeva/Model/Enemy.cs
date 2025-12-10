@@ -16,7 +16,6 @@ namespace _3ISIP223_Nikolaeva.Model
         public int Defense { get; set; }
         public EnemyType Type { get; set; }
 
-        // Особенности врагов
         public double CriticalChance { get; set; } = 0;
         public double FreezeChance { get; set; } = 0;
         public bool IgnoreDefense { get; set; } = false;

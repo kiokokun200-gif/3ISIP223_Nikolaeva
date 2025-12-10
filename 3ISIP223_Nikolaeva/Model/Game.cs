@@ -24,32 +24,32 @@ namespace _3ISIP223_Nikolaeva.Model
         // Предметы для сундуков
         private List<Item> weapons = new List<Item>
         {
-            new Item("Небесная ось", 5, 0),
-            new Item("Волчья погибель", 10, 0),
-            new Item("Аква Симулякрум", 15, 0),
-            new Item("Нефритовый коршун", 12, 3),
-            new Item("Посох Хомы", 20, 5)
+            new Item("Небесная ось", 10, 0),
+            new Item("Волчья погибель", 15, 0),
+            new Item("Аква Симулякрум", 17, 0),
+            new Item("Нефритовый коршун", 15, 3),
+            new Item("Посох Хомы", 20, 10)
         };
 
         private List<Item> armors = new List<Item>
         {
-            new Item("Кожаная броня", 0, 5),
-            new Item("Кольчуга", 0, 10),
-            new Item("Латные доспехи", 0, 15),
-            new Item("Волшебная мантия", 3, 8),
+            new Item("Кожаная броня", 0, 12),
+            new Item("Кольчуга", 0, 15),
+            new Item("Латные доспехи", 0, 19),
+            new Item("Волшебная мантия", 5, 15),
             new Item("Легендарные доспехи", 5, 20)
         };
 
         public Game()
         {
             // Начальная экипировка
-            CurrentWeapon = new Item("Дубина переговоров", 2, 0);
+            CurrentWeapon = new Item("Дубина переговоров", 7, 0);
             CurrentArmor = new Item("Одежда", 0, 1);
         }
 
         public void StartGame()
         {
-            Console.WriteLine("Добро пожаловать в текстовый рогалик!");
+            Console.WriteLine("Игра");
             Console.WriteLine("Ваша цель - выживать как можно дольше.");
             Console.WriteLine();
 
@@ -199,7 +199,7 @@ namespace _3ISIP223_Nikolaeva.Model
                 // Блокирование урона
                 if (defending)
                 {
-                    double blockPercent = 0.7 + (Raaandom.GetRandomDouble() * 0.3); // 70-100%
+                    double blockPercent = 0.7 + (Raaandom.GetRandomDouble() * 0.3); 
                     int blockedDamage = (int)(damage * blockPercent);
                     damage -= blockedDamage;
                     Console.WriteLine($"Вы заблокировали {blockedDamage} урона!");

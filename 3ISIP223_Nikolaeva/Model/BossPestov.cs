@@ -8,7 +8,7 @@ namespace _3ISIP223_Nikolaeva.Model
 {
     internal class BossPestov : Enemy
     {
-        public BossPestov() : base("Пестов С--", 26, 22, 1, EnemyType.BossPestov)
+        public BossPestov() : base("Пестов С--", Raaandom.GetRandomInt(12, 20), Raaandom.GetRandomInt(12, 15), Raaandom.GetRandomInt(1, 4), EnemyType.BossPestov)
         {
             IgnoreDefense = true;
             FreezeChance = 0.4;
